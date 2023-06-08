@@ -2,8 +2,12 @@
 
 .vscode
 # node_modules # already present
-obj  # not important
-.env # protect environment variables (mongoose,.,. ...)
+
+# not important
+obj  
+
+# protect environment variables (mongoose,.,. ...)
+.env
 
 # In a .gitignore file, you can use three different types of patterns:
 # 
@@ -11,6 +15,9 @@ obj  # not important
 # .name: This will ignore any file or directory with the name “.name”.
 # *.name: This will ignore any file or directory that ends with “.name”.
 
+# \.name: This will ignore any file
+
+## Git ignore by subanesh --ends
 
 
 ## Ignore Visual Studio temporary files, build results, and
