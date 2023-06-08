@@ -1,0 +1,42 @@
+--------------- ejs
+
+<%- include('header') -%>
+<h1><%= message %></h1>
+<h2><%= error.status %></h2>
+<pre><%= error.stack %></pre>
+<%- include('footer') -%>
+----------
+<%- include('header') -%>
+<h1><%= res.locals.message %></h1>
+<h2><%= res.locals.error.status %></h2>
+<pre><%= res.locals.error.stack %></pre>
+<%- include('footer') -%>
+
+
+
+------------pug
+
+---------------layout
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    block content
+
+---------------index
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+----------------errors
+extends layout
+
+block content
+  h1= message
+  h2= error.status
+  pre #{error.stack}
+

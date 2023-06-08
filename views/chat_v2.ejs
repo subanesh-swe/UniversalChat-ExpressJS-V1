@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="/nav_v2.css">
+    <link rel="stylesheet" href="/chat_v2.css">
+    <!-- <link rel="stylesheet" href="/main_v2.css"> -->
+    <title><%=title %></title>
+  </head>
+  <body>
+    <div class="nav">
+      <ul>
+        <li><a href="#">UniversalChat</a></li>
+        <li><username><span id="Name"><%=name %> </span></username></li>
+        <li><a href="/logout">logout</a></li>
+      </ul>
+    </div>
+    <!-- 
+    <div class="nav">
+        <items><a href="#">UniversalChat</a></items>
+        <items><span id="Name"><%=name %></span></items>
+        <items><a href="/logout">logout</a></items>
+      </ul>
+    </div> 
+    -->
+    <div class="contents">
+      <div class="chat">
+        <div id="message">
+          <ul>
+             <li id="username">subanesh_swe</li>
+             <li id="textcont">This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. This is swe. </li>
+          </ul>
+          <ul>
+             <li id="username">subanesh_swe</li>
+             <li id="textcont">This is swe.</li>
+          </ul>
+        </div>
+        <div class="writebox">
+          <input type="text" name="textmessage" placeholder="Write Somethings.." value="" id="textmessage">
+          <input type="submit" name="send" value="Send" id="send">
+        </div>
+      </div>
+    </div>
+    <script src="/chat_v2.js"></script>
+  </body>
+</html>
