@@ -32,5 +32,14 @@ router.get('/index/chat_v2', function (req, res, next) {
     }*/
 });
 
+router.get('/index/chat_v3', function (req, res, next) {
+        res.render('chat_v3', { title: "SWE's world", name: req.session.name });
+    /*if (req.session.name) {
+        res.render('chat_v2', { title: "SWE's world", name: req.session.name });
+    } else {
+        res.redirect('/users/login');
+    }*/
+});
+
 
 module.exports = router;
