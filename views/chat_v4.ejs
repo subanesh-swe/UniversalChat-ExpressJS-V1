@@ -18,41 +18,116 @@
     <div id="main">
         <div id="content">
             <div id="chat-content">
-                <div class="chat-box">
-                    <!--<div class="chat-log" id="chat-log">
-                        <div class="chat friend">
-                            <div class="user-1-photo"></div>
-                            <div class="user-1-message">
-                                <div class="chat__message__log">
-                                    <span class="user-info">John Doe</span>
-                                    <span class="user-info-2">3:30 PM, Today</span>
-                                </div>
-                                <p class="chat-message">Hey there! What's up?</p>
-                            </div>
-                        </div>
+                <div id="chat-box">
+                    <div id="chat-log" id="chat-log">
+                        <!--<div class="chat friend">
+            <div class="user-1-photo"></div>
+            <div class="user-1-message">
+                <div class="chat__message__log">
+                    <span class="user-info">John Doe</span>
+                    <span class="user-info-2">3:30 PM, Today</span>
+                </div>
+                <p class="chat-message">Hey there! What's up?</p>
+            </div>
+        </div>
 
-                        <div class="chat self">
-                            <div class="user-2-photo"></div>
-                            <div class="user-2-message">
-                                <div class="chat__message__log">
-                                    <span class="user-info">Jane Smith</span>
-                                    <span class="user-info-2">3:31 PM, Today</span>
-                                </div>
-                                <p class="chat-message-2">Not much. Just working on some code.</p>
-                            </div>
-                        </div>
-                        <div id="message">
+        <div class="chat self">
+            <div class="user-2-photo"></div>
+            <div class="user-2-message">
+                <div class="chat__message__log">
+                    <span class="user-info">Jane Smith</span>
+                    <span class="user-info-2">3:31 PM, Today</span>
+                </div>
+                <p class="chat-message-2">Not much. Just working on some code.</p>
+            </div>
+        </div>
+        <div id="message">
 
-                        </div>
-                        Add more messages here
-                    </div>-->
-                    <div id="input-container" style="width:100%;">
-                        <div id="input-container-writebox">
-                            <textarea id="textmessage" placeholder="Type your message here..."></textarea>
-                        </div>
-                        <button type="submit" name="send" value="Send" id="send">send</button>
-
+        </div>
+        Add more messages here-->
                     </div>
+                    <!--<div id="input-container" style="width:100%;">
+        <div id="input-container-writebox">
+            <textarea id="textmessage" placeholder="Type your message here..."></textarea>
+        </div>
+        <button type="submit" name="send" value="Send" id="send">send</button>
+
+    </div>-->
+                    <div class="container">
+                        <textarea class="text-input"></textarea>
+                        <button class="send-button">Send</button>
+                    </div>
+
+                    <style>
+                        .container {
+                            flex-grow: 0;
+                            width: auto;
+                            display: flex;
+                            flex-direction: row;
+                            align-items: flex-end;
+                            justify-content: center;
+                            padding: 0.5rem;
+                            background-color: aquamarine
+                        }
+
+                        .text-input {
+                            width: 60%;
+                            min-height: 100px;
+                            max-height: 150px;
+                            resize: none;
+                        }
+
+                        .send-button {
+                            height: 3rem;
+                            width: 6rem;
+                            /* margin-top: 10px; */
+                            /*padding: 10px;*/
+                            /*border:10px solid;*/
+                            /*margin:5px;*/
+                            border: none;
+                            font-size: 1rem;
+                            font-weight: 700;
+                            border-radius: 10px;
+                            background-color: #4CAF50;
+                            text-align: center;
+                            color: white;
+                        }
+
+                            .send-button:hover {
+                                background-color: #3e8e41;
+                            }
+                    </style>
+                    <!--<div class="container" contenteditable></div>
+
+    <style>
+        .container {
+            flex-grow: 0;
+            width: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0.5rem;
+            background-color: aquamarine;
+            word-wrap: break-word;
+        }
+
+            .container[contenteditable] {
+                min-height: 50px;
+                max-height: 150px;
+                overflow-y: auto;
+            }
+    </style>
+
+    <script>
+        const container = document.querySelector('.container[contenteditable]');
+
+        container.addEventListener('input', () => {
+            container.style.height = 'auto';
+            container.style.height = `${container.scrollHeight}px`;
+        });
+    </script>-->
+
                 </div>
             </div>
         </div>
