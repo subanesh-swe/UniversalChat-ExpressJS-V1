@@ -5,7 +5,7 @@
 
 body {
     background-color: #f3f3f3;
-    padding-top: 50px; /* nav bar */
+    /*padding-top: 50px;*/ /* nav bar */
 /*    overflow-x: hidden;
     overflow-y: hidden;*/
 }
@@ -21,7 +21,7 @@ body {
     justify-content: space-around;
     gap: 0.75rem;
     border-bottom: 2px solid black;
-/*    background-color: rgb(0, 235, 255);*/
+    background-color: rgb(0, 235, 255);
 }
 
     #nav > #logo {
@@ -29,7 +29,7 @@ body {
         font-weight: 900;
     }
 
-    #nav > #chat-headind {
+    #nav > #chat-heading {
         width: 100%;
         display: flex;
         align-items: center;
@@ -37,14 +37,14 @@ body {
 /*        background-color:rgb(62, 252, 11);*/
     }
 
-        #nav > #chat-headind > username {
+        #nav > #chat-heading > username {
             color: #000000;
             font-size: 1.5rem;
             padding: 0px 5px 3px 5px;
             text-decoration: none;
         }
 
-        #nav > #chat-headind > a {
+        #nav > #chat-heading > a {
             color: rgb(0, 0, 0);
             font-size: 20px;
             padding: 5px 10px;
@@ -53,16 +53,45 @@ body {
             text-decoration: none;
         }
 
-            #nav > #chat-headind > a:is(:hover, :focus) {
+            #nav > #chat-heading > a:is(:hover, :focus) {
                 background-color: rgb(255, 255, 255, 0.15);
                 transform: scale(1.1);
             }
 
+/*    #nav > #chat-heading > a::before,
+    #nav > #chat-heading > a::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 0%;
+        left: 0;
+        bottom: 0;
+    }
+
+    #nav > #chat-heading > a::before {
+        background-color: rgba(255,255,255,0.5);
+        transition: height 0.2s ease-out;
+    }
+
+    #nav > #chat-heading > a:hover::before {
+        height: 100%;
+    }
+
+    #nav > #chat-heading > a::after {
+        background-color: rgba(255,255,255,0.5);
+        transition: height 0.2s ease-out;
+    }
+
+    #nav > #chat-heading > a:hover::after {
+        height: 100%;
+    }*/
+
 
 #main {
+    margin-top: 50px;
     height: calc(100vh - 50px); /*NAV*/
     width: 100vw;
-    position:fixed;
+    position: fixed;
     background-color: rgb(175, 150, 227);
 }
 
@@ -80,27 +109,93 @@ body {
 
 
 #chat-box {
-    height:100%;
-    width:100%;
+    height: 100%;
+    width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-around;
+    flex-direction: column;
+    /*    align-items: center;
+    justify-content: space-evenly;*/
     background-color: rgb(255, 255, 255);
 }
 
-
-
 #input-container {
+    flex-grow: 0;
+    width: auto;
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0.5rem;
+    background-color: aquamarine;
+}
+
+    #input-container > #input-message {
+        width: 60%;
+        min-height: 50px;
+        max-height: 150px;
+        resize: none;
+        display: flex;
+        padding: 5px 10px;
+        outline: none;
+        border: none;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 10px;
+        background-color: #e1e3ef;
+    }
+
+        #input-container > #input-message::placeholder {
+             /* line-height: 3em; */
+        }
+
+        #input-container > #input-message::-webkit-scrollbar {
+            width: 5px;
+            border-right: 3px solid blue;
+            position: relative;
+            left: 3px;
+        }
+
+        #input-container > #input-message::-webkit-scrollbar-track {
+            background-color: #f5f5f5;
+        }
+
+        #input-container > #input-message::-webkit-scrollbar-thumb {
+            background-color: #000000;
+        }
+
+    #input-container > #send-message {
+        height: 3rem;
+        width: 6rem;
+        /* margin-top: 10px; */
+        /*padding: 10px;*/
+        /*border:10px solid;*/
+        /*margin:5px;*/
+        border: none;
+        font-size: 1rem;
+        font-weight: 700;
+        border-radius: 10px;
+        background-color: #4CAF50;
+        text-align: center;
+        color: white;
+    }
+
+        #input-container > #send-message:hover {
+            background-color: #3e8e41;
+        }
+
+
+/*#input-container {
+    flex-grow: 0;
     display: flex;
     gap: 0.2rem;
-    /*    margin-top: 0.2rem;*/
     justify-content: center;
+    align-content: stretch;
 }
 
     #input-container > #input-container-writebox {
-        display: flex;
-        align-items: center;
         gap: 0.75rem;
+        height:auto;
         background-color: rgb(255 255 255 / 10%);
         border-radius: 0.2rem;
         border-bottom-left-radius: 0.5rem;
@@ -109,7 +204,7 @@ body {
         #input-container > #input-container-writebox > textarea {
             display: flex;
             width: 500px;
-            height: 30px;
+            min-height:50px;
             padding: 5px 10px;
             outline: none;
             border: none;
@@ -128,7 +223,8 @@ body {
         border: none;
         color: black;
         font-size: 1rem;
-        width: 3.5rem;
+        width: 6rem;
+        height: 3rem;
         font-weight: 700;
         border-radius: 10px;
         color: white;
@@ -138,4 +234,58 @@ body {
 
         #input-container > button:hover {
             background-color: #7b47e2;
-        }
+        }*/
+/*
+.input-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.text-input {
+    width: 60%;
+    min-height: 50px;
+    max-height: 150px;
+    resize: none;
+}
+
+.textarea::-webkit-scrollbar {
+    width: 12px;
+}
+
+.textarea::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+    background-color: #000000;
+}
+
+.send-button {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+    .send-button:hover {
+        background-color: #3e8e41;
+    } */
+
+
+#chat-log {
+    flex-grow: 1;
+    height: 95%;
+    display: flex;
+    min-height: 75%;
+    width: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
+/*    margin: 0.5rem;*/
+    /* border-right: 0.5rem; */
+/*    border: 0.5rem solid skyblue;*/
+    padding: 0.5rem;
+    background-color: red;
+}
+
