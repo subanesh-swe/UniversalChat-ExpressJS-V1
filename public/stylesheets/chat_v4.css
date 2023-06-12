@@ -282,9 +282,9 @@ body {
     width: auto;
     overflow-x: hidden;
     overflow-y: scroll;
-/*    margin: 0.5rem;*/
+    /*    margin: 0.5rem;*/
     /* border-right: 0.5rem; */
-/*    border: 0.5rem solid skyblue;*/
+    /*    border: 0.5rem solid skyblue;*/
     padding: 0.5rem;
     background-color: red;
 }
