@@ -1,37 +1,175 @@
-<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="/nav.css">
-    <link rel="stylesheet" href="/chat.css">
-    <link rel="stylesheet" href="/main.css">
-    <title><%=title %></title>
-  </head>
-  <body>
-    <div class="nav">
-      <ul>
-        <li><a href="#">UniversalChat</a></li>
-        <li><span id="Name"><%=name %> </span></li>
-        <li><a href="/logout">logout</a></li>
-      </ul>
+    <link rel="stylesheet" href="/chat_v4.css">
+    <title>SWE's world</title>
+    <!--<style>
+        #navi {
+            /*            background-color: #333;
+            height: 50px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;*/
+            height: 50px;
+            width: 100%;
+            margin: 0;
+            border: none;
+            /*padding: 0px 10px;*/
+            background-color: #5eadc6;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            list-style-type: none;
+        }
+
+            #navi logo {
+                color: #FFF;
+                font-weight: 900;
+            }
+
+            #navi ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 10px;
+/*                float: right;*/
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                /*padding: 10px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                text-decoration: none;
+                list-style-type: none;*/
+            }
+
+            #navi li {
+                display: inline-block;
+                /*                margin-right: 20px;*/
+                position: relative;
+                text-align: center;
+            }
+
+                #navi li a {
+                    color: white;
+                    font-size: 1rem;
+                    padding: 0px 5px 3px 5px;
+                    text-decoration: none;
+                    display: block;
+                }
+
+                #navi li::before,
+                #navi li::after {
+                    content: "";
+                    position: absolute;
+                    width: 100%;
+                    height: 0%;
+                    left: 0;
+                    bottom: 0;
+                }
+
+                #navi li::before {
+                    background-color: rgba(255,255,255,0.5);
+                    transition: height 0.2s ease-out;
+                }
+
+                #navi li:hover::before {
+                    height: 100%;
+                }
+
+                #navi li::after {
+                    background-color: rgba(255,255,255,0.5);
+                    transition: height 0.2s ease-out;
+                }
+
+                #navi li:hover::after {
+                    height: 100%;
+                }
+        #nav-new {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 0.75rem;
+        }
+
+            #links-container > a {
+                color: rgb(255 255 255 / 80%);
+                font-size: 0.75rem;
+                padding: 0px 5px 3px 5px;
+                text-decoration: none;
+            }
+
+                #links-container > a:is(:hover, :focus) {
+                    /*            text-decoration: underline;*/
+                    background-color: rgb(255, 255, 255, 0.15);
+                    transform: scale(1.1);
+                }
+    </style>-->
+</head>
+<body>
+    <!--<div id="nav-new" style="padding-left: 10%; padding-right: 10%;">
+        <a href="https://gmail.com">Gmail</a>
+        <a href="https://unsplash.com">Unsplash</a>
+        <a href="https://subanesh.cyclic.app">My site</a>
+        <a href="#">About</a>
+    </div>-->
+    <!--<div id="navi">
+        <ul>
+            <li><a href="#">Name</a></li>
+            <li><a href="#">Email</a></li>
+            <li><a href="#">Logout</a></li>
+        </ul>
+    </div>-->
+    <div id="nav">
+        <div id="chat-heading">
+            <a href="#">UniversalChat</a>
+            <username><span id="Name"><%=name %></span></username>
+            <a href="/logout">logout</a>
+        </div>
     </div>
-    <div class="contents">
-      <div class="Chat">
-        <div id="message"></div>
-        <div class="writebox">
-        <input type="text" name="textmessage" placeholder="Write Somethings.." value="" id="textmessage">
-        <input type="submit" name="send" value="Send" id="send">
-      </div>
-      </div>
-      
-      </div>
+
+    <div id="main">
+        <div id="content">
+            <div id="chat-content">
+                <div id="chat-box">
+                    <div id="chat-log"  onclick="document.querySelector('#input-messagecd').focus()">
+                        
+                        <div class="chat friend">
+                            <div class="message">
+                                <div class="username">subanesh_swe</div>
+                                <div class="textcont">This is swe.  This is swe. This is swe. This is swe. This is swe. </div>
+                                <div class="time">time</div>
+                            </div>
+                        </div>
+                        <div class="chat self">
+                            <div class="message">
+                                <div class="username">subanesh</div>
+                                <div class="textcont">This is swe. This is swe. This is swe. This is swe. </div>
+                                <div class="time">time</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="input-container">
+                        <textarea id="input-message" placeholder="Type something..."></textarea>
+                        <button id="send-message">Send</button>
+                    </div>
+                    
+
+                </div>
+            </div>
+        </div>
     </div>
-    <script src="/chat.js"></script>
-  </body>
+    <script src="/chat_v4.js"></script>
+</body>
 </html>

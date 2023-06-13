@@ -1,0 +1,92 @@
+.contents {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    height: auto;
+    margin: auto;
+    /*gap: 5px;*/
+    justify-content: center;
+    align-items: center;
+}
+
+    .contents .Chat {
+        width: 100vw;
+        height: 90vh;
+        margin: 10px 10px 10px 10px;
+        border: 3px solid #692be2;
+        border-radius: 5px;
+        background: #fff;
+        overflow: auto;
+        position: relative;
+    }
+
+        .contents .Chat #message {
+            padding: 0 40px;
+            margin-top: 30px;
+            height: 420px;
+        }
+
+            .contents .Chat #message ul {
+                display: flex;
+                list-style: none;
+                align-items: center;
+                margin-top: 20px;
+            }
+
+                .contents .Chat #message ul #username {
+                    font-weight: 700;
+                }
+
+                .contents .Chat #message ul #textcont {
+                    display: flex;
+                    align-items: center;
+                    padding: 0 10px;
+                    margin-left: 10px;
+                    min-width: 100px;
+                    min-height: 35px;
+                    background-color: #e1e3ef;
+                    border-radius: 10px;
+                }
+
+        .contents .Chat .writebox {
+            display: flex;
+            height: 30px;
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            justify-content: center;
+        }
+
+            .contents .Chat .writebox input[type="text"] {
+                width: 340px;
+                height: 30px;
+                padding: 5px 10px;
+                outline: none;
+                border: none;
+                border-radius: 10px;
+                background-color: #e1e3ef;
+            }
+
+            .contents .Chat .writebox input[type="submit"] {
+                width: 80px;
+                height: 40px;
+                padding: 5px 10px;
+                outline: none;
+                border: 1px solid;
+                color: #e1e3ef;
+                font-weight: 700;
+                border-radius: 10px;
+                background-color: #692be2;
+                cursor: pointer;
+            }
+
+                .contents .Chat .writebox input[type="submit"]:hover {
+                    background-color: #7b47e2;
+                }
+
+                .contents .Chat .writebox input[type="submit"]:active {
+                    border: 3px solid;
+                    border-radius: 10px;
+                    background-color: #8f64e3;
+                }
