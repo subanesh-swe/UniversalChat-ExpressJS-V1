@@ -132,7 +132,7 @@
     <div id="nav">
         <div id="chat-heading">
             <a href="#">UniversalChat</a>
-            <username><span id="Name"><%=name %>subanesh</span></username>
+            <username><span id="Name"><%=name %></span></username>
             <a href="/logout">logout</a>
         </div>
     </div>
@@ -141,52 +141,35 @@
         <div id="content">
             <div id="chat-content">
                 <div id="chat-box">
-                    <div id="chat-log" id="chat-log">
-                        <!--<div class="chat friend">
-                            <div class="user-1-photo"></div>
-                            <div class="user-1-message">
-                                <div class="chat__message__log">
-                                    <span class="user-info">John Doe</span>
-                                    <span class="user-info-2">3:30 PM, Today</span>
-                                </div>
-                                <p class="chat-message">Hey there! What's up?</p>
+                    <div id="chat-log">
+                        
+                        <div class="chat friend">
+                            <div class="message">
+                                <div class="username">subanesh_swe</div>
+                                <div class="textcont">This is swe.  This is swe. This is swe. This is swe. This is swe. </div>
+                                <div class="time">time</div>
+                            </div>
+                        </div>
+                        <div class="chat self">
+                            <div class="message">
+                                <div class="username">subanesh</div>
+                                <div class="textcont">This is swe. This is swe. This is swe. This is swe. </div>
+                                <div class="time">time</div>
                             </div>
                         </div>
 
-        <div class="chat self">
-            <div class="user-2-photo"></div>
-            <div class="user-2-message">
-                <div class="chat__message__log">
-                    <span class="user-info">Jane Smith</span>
-                    <span class="user-info-2">3:31 PM, Today</span>
-                </div>
-                <p class="chat-message-2">Not much. Just working on some code.</p>
-            </div>
-        </div>
-        <div id="message">
-
-                        </div>
-                        Add more messages here-->
                     </div>
 
                     <div id="input-container">
                         <textarea id="input-message" placeholder="Type something..."></textarea>
                         <button id="send-message">Send</button>
                     </div>
-
-                    <script>
-                        const text_input = document.querySelector('#input-message');
-
-                        text_input.addEventListener('input', () => {
-                            text_input.style.height = 'auto';
-                            text_input.style.height = `${text_input.scrollHeight}px`;
-                        });
-                    </script>
+                    
 
                 </div>
             </div>
         </div>
     </div>
-    <script src="/chat_v3.js"></script>
+    <script src="/chat_v4.js"></script>
 </body>
 </html>

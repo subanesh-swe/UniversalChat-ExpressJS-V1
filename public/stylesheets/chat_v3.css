@@ -44,7 +44,7 @@ body {
         flex-flow: row-reverse wrap;
     }
 
-.user-1-photo {
+/*.user-1-photo {
     width: 30px;
 }
 
@@ -99,7 +99,7 @@ body {
     background-color: #f1f1f1;
     padding: 10px15px;
 }
-
+*/
 .reply-icon {
     font-size: 10px;
     color: #2b2c2d;
