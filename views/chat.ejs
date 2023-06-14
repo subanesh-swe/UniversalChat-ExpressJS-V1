@@ -3,7 +3,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="/chat_v4.css">
+    <link rel="stylesheet" href="/chat.css">
+    <link rel="stylesheet" href="/chat_mobile.css">
     <title>SWE's world</title>
     <!--<style>
         #navi {
@@ -141,7 +142,7 @@
         <div id="content">
             <div id="chat-content">
                 <div id="chat-box">
-                    <div id="chat-log"  onclick="document.querySelector('#input-messagecd').focus()">
+                    <div id="chat-log" onclick="document.querySelector('#input-message').focus()">
                         
                         <div class="chat friend">
                             <div class="message">
@@ -160,8 +161,10 @@
 
                     </div>
 
-                    <div id="input-container">
-                        <textarea id="input-message" placeholder="Type something..."></textarea>
+                    <div id="input-container" onclick="document.querySelector('#input-message').focus()">
+                        <div id="input-message-outer">
+                            <textarea id="input-message" placeholder="Type something..."></textarea>
+                        </div>
                         <button id="send-message">Send</button>
                     </div>
                     
@@ -170,6 +173,6 @@
             </div>
         </div>
     </div>
-    <script src="/chat_v4.js"></script>
+    <script src="/chat.js"></script>
 </body>
 </html>

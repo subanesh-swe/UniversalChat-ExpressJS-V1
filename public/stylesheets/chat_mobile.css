@@ -1,0 +1,74 @@
+
+@media (max-width: 768px) {
+    #nav {
+        background-color: rgb(100, 255, 139);
+    }
+
+        #nav > #chat-heading {
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+    #chat-box {
+        /*        position:absolute;*/ /* in mobile leaves a bottom space*/
+        position: fixed;
+/*        top: 50px;
+        left: 0;*/
+        height: calc(100% - 50px);
+        /*            height: 100%;*/
+    }
+
+    .message {
+        max-width: 90%;
+        border-radius: 5px;
+        font-size: 0.85rem;
+    }
+
+        .message .username {
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .message .textcont {
+            font-size: 0.85rem;
+        }
+
+            .message .textcont span {
+                font-weight: 500;
+            }
+
+
+        .message .time {
+            font-size: 0.75rem;
+        }
+
+    #input-container {
+        width: auto;
+        min-height: 50px;
+        max-height: 150px;
+        gap: 0.5rem;
+        padding: 5px;
+    }
+
+        #input-container > #input-message-outer {
+            width: 80%;
+            height: calc(100% - 12px);
+        }
+
+            #input-container > #input-message-outer > #input-message {
+                width: 100%;
+                font-size: 1rem;
+                font-weight: 500;
+                height: 20px;
+                max-height: 100%;
+            }
+
+        #input-container > #send-message {
+            height: 3rem;
+            width: 4rem;
+/*            max-width:6rem;*/
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+}

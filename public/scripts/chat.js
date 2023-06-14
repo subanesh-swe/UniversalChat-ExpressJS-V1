@@ -1,4 +1,4 @@
-const socket = io.connect("http://localhost:4000");
+const socket = io.connect("localhost:4000");
 
 const sender = document.querySelector("#Name");
 const text_input = document.querySelector('#input-message');
@@ -7,8 +7,12 @@ const chat_log = document.querySelector("#chat-log");
 
 
 text_input.addEventListener('input', () => {
-    text_input.style.height = 'auto';
-    text_input.style.height = `${text_input.scrollHeight}px`;
+    if (text_input.value == "") {
+        text_input.style.height = `${1.2}rem`;
+    } else {
+        text_input.style.height = 'auto';
+        text_input.style.height = `${text_input.scrollHeight}px`;
+    }
 });
 
 send_message.addEventListener("click", () => {
@@ -24,7 +28,7 @@ send_message.addEventListener("click", () => {
     var msg =
         "<div class='chat self'>" +
         "<div class='message'>" +
-        "<div class='username'>" + sender.innerHTML + "</div>" +
+        /*"<div class='username'>" + sender.innerHTML + "</div>" +*/
         "<div class='textcont'>" + text_input.value + "</div>" +
         "<div class='time'>" + datetime + "</div>" +
         "</div>" +
@@ -33,7 +37,7 @@ send_message.addEventListener("click", () => {
     console.log(msg);
     text_input.value = "";
     text_input.style.height = 'auto';
-    text_input.style.height = `${text_input.scrollHeight}px`;
+    text_input.style.height = `${1.2}rem`;
 });
 
 socket.on("chat", (data) => {
