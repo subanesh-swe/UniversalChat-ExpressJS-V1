@@ -4,9 +4,12 @@ const path = require('path');
 const usersDatabase = require(path.join(__dirname, '..', 'mongooseModels', 'usersDatabase.js'));
 const session = require("express-session");
 const createError = require('http-errors');
-const { create } = require("domain");
 
 const router = express.Router();
+
+router.get('/', function (req, res, next) {
+    res.redirect("/admin/login");
+});
 
 router.get('/login', function (req, res, next) {
     if (!req.session.name) {
@@ -16,10 +19,17 @@ router.get('/login', function (req, res, next) {
     }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
     try {
+
+        if (res.body.email !== "subaneshtech@gmail.com" && res.body.email !== "subaneshtechie@gmail.com" && res.body.email !== "subaneshswe@gmail.com") {
+            console.log("admin access denied.!");
+            next(createError(401, "admin access denied...!"));
+        }
+
         //const data = await usersDatabase.find({ email: req.body.email });
         const data = await usersDatabase.findOne({ email: req.body.email });
+
         if (data != null && data.length != 0) {
             const newPassword = req.body.password;
             const userPassword = data.password;
@@ -42,7 +52,7 @@ router.post("/login", async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        //next(createError(400, error));
+        next(createError(400, error));
     }
 });
 
