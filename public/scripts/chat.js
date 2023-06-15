@@ -20,6 +20,12 @@ send_message.addEventListener("click", () => {
         message: text_input.value,
         sender: sender.innerHTML,
     });
+
+    // convert html contents to text (if any)
+    const rawMessageDiv = document.createElement("div");
+    rawMessageDiv.textContent = text_input.value;
+    var rawMessage = rawMessageDiv.innerHTML;
+
     var currentdate = new Date();
     var datetime = currentdate.getDay() + "/" + currentdate.getMonth()
         + "/" + currentdate.getFullYear() + " @ "
@@ -29,7 +35,7 @@ send_message.addEventListener("click", () => {
         "<div class='chat self'>" +
         "<div class='message'>" +
         /*"<div class='username'>" + sender.innerHTML + "</div>" +*/
-        "<div class='textcont'>" + text_input.value + "</div>" +
+        "<div class='textcont'>" + rawMessage + "</div>" +
         "<div class='time'>" + datetime + "</div>" +
         "</div>" +
         "</div>";
@@ -41,6 +47,11 @@ send_message.addEventListener("click", () => {
 });
 
 socket.on("chat", (data) => {
+    // convert html contents to text (if any)
+    const rawMessageDiv = document.createElement("div");
+    rawMessageDiv.textContent = data.message;
+    var rawMessage = rawMessageDiv.innerHTML;
+
     var currentdate = new Date();
     var datetime = currentdate.getDay() + "/" + currentdate.getMonth()
         + "/" + currentdate.getFullYear() + " @ "
@@ -50,7 +61,7 @@ socket.on("chat", (data) => {
         "<div class='chat friend'>" +
         "<div class='message'>" +
         "<div class='username'>" + data.sender + "</div>" +
-        "<div class='textcont'>" + data.message + "</div>" +
+        "<div class='textcont'>" + rawMessage + "</div>" +
         "<div class='time'>" + datetime + "</div>" +
         "</div>" +
         "</div>";

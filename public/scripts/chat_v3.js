@@ -47,3 +47,19 @@ socket.on("chat", (data) => {
     console.log(msg);
     text.value = " ";
 });
+
+
+
+//const chat_log = document.querySelector("#chat-log");
+//const message = "<h1>subanesh</h1><h2>This is an example</h2>";
+//const div = document.createElement("div");
+//div.textContent = message;
+//chat_log.appendChild(div);
+
+//const div = document.createElement("div");
+//div.textContent = data.message;
+//msg += div.outerHTML; //this will have <div>...</div>
+//msg += div.innerHTML; //this will not have <div>...</div>
+
+//const div = document.createElement("div");
+//div.classList.add("message"); // to create <div class="message">...</div>
