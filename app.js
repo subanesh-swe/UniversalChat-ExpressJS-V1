@@ -2,10 +2,17 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
-const mongoose = require('mongoose');
-const session = require('express-session');
 const socket = require('socket.io');
 // const fs = require('fs');
+
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const device = require('express-device');
+const mongoose = require('mongoose');
+const MongoDBStore = require('connect-mongodb-session')(session);
+
+// Subanesh's moongoose database 
+require('dotenv').config(); // mongo DB url file
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -13,8 +20,6 @@ const adminRouter = require('./routes/admin');
 
 const app = express();
 
-// Subanesh's moongoose database 
-require('dotenv').config(); // mongo DB url file
 
 // connect to mongoose database
 // this meight take few sec after APP starts
@@ -31,9 +36,42 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public', 'stylesheets')));
 app.use(express.static(path.join(__dirname, 'public', 'scripts')));
-app.use(session({ secret: "UniversalChat", resave: false, saveUninitialized: true }));
 
-app.use('/', indexRouter);
+//this will lose all users cookies after server restart
+//app.use(session({ secret: "UniversalChat", resave: false, saveUninitialized: true }));
+//mongoose will store cookies, so we will not lose all users cookies after server restart
+const store = new MongoDBStore({ uri: process.env.MONGO_URI, collection: 'sessions' });
+
+store.on('error', function (error) {
+    assert.ifError(error);
+    assert.ok(false);
+});
+
+app.use(cookieParser());
+app.use(device.capture());
+app.use(require('express-session')({
+    secret: 'This is a secret',
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    },
+    store: store,
+    resave: true,
+    saveUninitialized: true
+}));
+app.get('/', (req, res) => {
+    // Get the device details from the request object
+    const deviceType = req.device.type;
+    const deviceName = req.device.name;
+    const deviceVersion = req.device.version;
+
+    // Set a cookie with the device details
+    res.cookie('device', `${deviceType} ${deviceName} ${deviceVersion}`);
+
+    // Send a response
+    res.send(`Device details stored in cookie: ${deviceType} ${deviceName} ${deviceVersion}`);
+});
+
+app.use('/i', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 
