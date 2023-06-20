@@ -5,11 +5,12 @@ const logger = require('morgan');
 const socket = require('socket.io');
 // const fs = require('fs');
 
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const device = require('express-device');
+const DeviceDetector = require('node-device-detector');
 const mongoose = require('mongoose');
 const MongoDBStore = require('connect-mongodb-session')(session);
+//const usersSession = require(path.join(__dirname, 'mongooseModels', 'usersSessions.js'));
 
 // Subanesh's moongoose database 
 require('dotenv').config(); // mongo DB url file
@@ -40,15 +41,23 @@ app.use(express.static(path.join(__dirname, 'public', 'scripts')));
 //this will lose all users cookies after server restart
 //app.use(session({ secret: "UniversalChat", resave: false, saveUninitialized: true }));
 //mongoose will store cookies, so we will not lose all users cookies after server restart
-const store = new MongoDBStore({ uri: process.env.MONGO_URI, collection: 'sessions' });
-
-store.on('error', function (error) {
-    assert.ifError(error);
-    assert.ok(false);
+//const store = new MongoDBStore({ uri: process.env.MONGO_URI, collection: 'sessions' });
+const store = new MongoDBStore({
+    uri: process.env.MONGO_URI,
+    collection: 'sessions',
+    expires: 1000 * 60 * 60 * 24 * 7, // 1 week
+    touchAfter: 3600, // update every hour
+    //schema: sessionSchema // pass your custom schema here
+    //model: usersSession // pass your custom model here
 });
 
-app.use(cookieParser());
-app.use(device.capture());
+store.on('error', function (error) {
+    console.log("store error :" + error);
+    //assert.ifError(error);
+    //assert.ok(false);
+});
+
+//app.use(cookieParser());
 app.use(require('express-session')({
     secret: 'This is a secret',
     cookie: {
@@ -58,20 +67,27 @@ app.use(require('express-session')({
     resave: true,
     saveUninitialized: true
 }));
-app.get('/', (req, res) => {
-    // Get the device details from the request object
-    const deviceType = req.device.type;
-    const deviceName = req.device.name;
-    const deviceVersion = req.device.version;
 
-    // Set a cookie with the device details
-    res.cookie('device', `${deviceType} ${deviceName} ${deviceVersion}`);
+app.use('/users/login', (req, res, next) => {
+    const detector = new DeviceDetector({
+        clientIndexes: true,
+        deviceIndexes: true,
+        deviceAliasCode: false,
+    });
 
-    // Send a response
-    res.send(`Device details stored in cookie: ${deviceType} ${deviceName} ${deviceVersion}`);
+    //const userAgent = 'Mozilla/5.0 (Linux; Android 5.0; NX505J Build/KVT49L) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.78 Mobile Safari/537.36';
+    //const result = detector.detect(userAgent);
+
+    const userAgent = req.headers['user-agent'];
+    const result = detector.detect(userAgent);
+
+    req.session.deviceDetails = result;
+    req.session.updateAt = Date.now();
+    console.log("in update of sessions-----------------------------------");
+    next();
 });
 
-app.use('/i', indexRouter);
+app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 

@@ -74,5 +74,17 @@ router.post("/register", async (req, res) => {
     }
 });
 
+router.get('/logout', function (req, res) {
+    console.log("chearing session cookies....................***********");
+    req.session.destroy(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('/');
+        }
+    });
+    //res.clearCookie('session')
+    //res.redirect('/')
+})
 
 module.exports = router;

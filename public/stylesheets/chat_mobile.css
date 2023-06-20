@@ -1,12 +1,12 @@
 
 @media (max-width: 768px) {
     #nav {
-        background-color: rgb(100, 255, 139);
+/*        background-color: rgb(100, 255, 139);*/
     }
 
         #nav > #chat-heading {
-            font-size: 1rem;
-            font-weight: 800;
+/*            font-size: 1rem;
+            font-weight: 800;*/
         }
 
     #chat-box {

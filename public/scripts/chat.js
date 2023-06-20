@@ -70,3 +70,10 @@ socket.on("chat", (data) => {
         chat_log.innerHTML += msg;
     console.log(msg);
 });
+
+function logout() {
+    // Clear local storage
+    localStorage.clear();
+    // Redirect to login page
+    window.location.href = "/login";
+}
