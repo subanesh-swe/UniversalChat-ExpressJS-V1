@@ -6,6 +6,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700&amp;lang=en" />-->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+    <script>
+        const RoomId = decodeString( decodeURIComponent("<%= encodeURIComponent(roomId) %>") );
+        const RoomName = decodeString( decodeURIComponent("<%= encodeURIComponent(roomName) %>") );
+        const UserName = decodeString( decodeURIComponent("<%= encodeURIComponent(userName) %>") );
+        function decodeString(str) {
+            return str.replace(/&#(\d+);/g, function (match, dec) {
+                return String.fromCharCode(dec);
+            });
+        }
+    </script>
     <link rel="stylesheet" href="/chat.css">
     <link rel="stylesheet" href="/chat_mobile.css">
     <title>SWE's world</title>
@@ -136,8 +146,9 @@
     <div id="nav">
         <div id="chat-heading">
             <a href="#">UniversalChat</a>
-            <button onclick="document.getElementById('popup').style.display='block'">Open Popup</button>
-            <username><span id="Name"><%=name %></span></username>
+            <a><%= unescape(roomName) %></a>
+            <!--<button onclick="document.getElementById('popup').style.display='block'">Open Popup</button>-->
+            <username><span id="Name"><%=userName %></span></username>
             <a href="/users/logout">logout</a>
         </div>
     </div>

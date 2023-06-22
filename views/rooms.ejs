@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" />
+    <link rel="stylesheet" href="/login.css" />
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title><%= title %></title>
+</head>
+<body>
+    <div class="allbody">
+        <div class="login-genel">
+            <div class="login-banner">
+                <span class="welcome">Welcome</span>
+                <div class="banner-box"><span>Chat</span></div>
+            </div>
+            <div class="login-form">
+                <form id="postForm">
+                    <input type="text" name="roomName" placeholder="Room Name" /><br />
+                    <input type="password"  id="password" name="password" placeholder="Password" style="visibility: hidden; height: 0px;"/><br />
+                    <label for="switch">Create password:</label>
+                    <input type="checkbox" id="switch" onclick="toggleVisibility()" name="createPassword" /><br />
+                    <button type="submit">LOGIN</button><br />
+                </form>
+            </div>
+            <script>
+                function toggleVisibility() {
+                    var password = document.getElementById("password");
+                    var switchElement = document.getElementById("switch");
+                    if (switchElement.checked) {
+                        password.style.visibility = "visible";
+                        password.style.height = `fit-content`;
+                    } else {
+                        password.style.visibility = "hidden";
+                        password.style.height = `0px`;
+                    }
+                }
+            </script>
+        </div>
+    </div>
+    <script src="/formHandler.js"></script>
+</body>
+</html>

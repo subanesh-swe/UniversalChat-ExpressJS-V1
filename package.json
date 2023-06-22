@@ -7,7 +7,7 @@
     "devStart": "nodemon --ignore 'views/*,public/*,public/scripts/*' ./bin/www"
   },
   "dependencies": {
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.0.1",
     "connect-mongodb-session": "^3.1.1",
     "debug": "~2.6.9",
     "dotenv": "^16.1.3",
@@ -19,10 +19,9 @@
     "morgan": "~1.9.1",
     "node-device-detector": "^2.0.14",
     "path": "^0.12.7",
-    "socket.io": "^4.6.2",
-    "uuid": "^9.0.0"
+    "socket.io": "^4.6.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^1.14.9"
   }
 }
