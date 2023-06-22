@@ -3,27 +3,44 @@ const socket = io.connect("localhost:4000");
 const sender = document.querySelector("#Name");
 const text_input = document.querySelector('#input-message');
 const send_message = document.querySelector("#send-message");
-const chat_log = document.querySelector("#chat-log");
 
+const chat_log = document.querySelector("#chat-log");
+const input_container = document.querySelector("#input-container");
+
+chat_log.addEventListener('click', function (event) {
+    if (!event.target.closest('.message')) {
+        console.log('Clicked outside sub-container');
+    } else {
+        text_input.focus();
+    }
+});
+
+input_container.addEventListener('click', function (event) {
+    text_input.focus();
+});
 
 text_input.addEventListener('input', () => {
     if (text_input.value == "") {
         text_input.style.height = `${1.2}rem`;
     } else {
-        text_input.style.height = 'auto';
+        //text_input.style.height = 'auto';
         text_input.style.height = `${text_input.scrollHeight}px`;
     }
 });
 
 send_message.addEventListener("click", () => {
+    const message = text_input.value.replace(/^[ \t]*[\r\n]+/gm, '');
+    if (message == "") return;
+    /*const message = text_input.value.replace(/[\n\r\s]+/g, ' ');
+    This will replace all new lines(\n), carriage returns(\r) and spaces(\s) with a single space character(' ').*/
     socket.emit("chat", {
-        message: text_input.value,
+        message: message,
         sender: sender.innerHTML,
     });
 
     // convert html contents to text (if any)
     const rawMessageDiv = document.createElement("div");
-    rawMessageDiv.textContent = text_input.value;
+    rawMessageDiv.textContent = message;
     var rawMessage = rawMessageDiv.innerHTML;
 
     var currentdate = new Date();
@@ -40,16 +57,18 @@ send_message.addEventListener("click", () => {
         "</div>" +
         "</div>";
     chat_log.innerHTML += msg;
-    console.log(msg);
+    console.log("sending msg:" + msg);
     text_input.value = "";
     text_input.style.height = 'auto';
     text_input.style.height = `${1.2}rem`;
 });
 
 socket.on("chat", (data) => {
+    const message = text_input.value.replace(/^[ \t]*[\r\n]+/gm, '');
+    if (message == "") return;
     // convert html contents to text (if any)
     const rawMessageDiv = document.createElement("div");
-    rawMessageDiv.textContent = data.message;
+    rawMessageDiv.textContent = message;
     var rawMessage = rawMessageDiv.innerHTML;
 
     var currentdate = new Date();
@@ -68,7 +87,7 @@ socket.on("chat", (data) => {
 
     if (data.sender !== sender.innerHTML)
         chat_log.innerHTML += msg;
-    console.log(msg);
+    console.log("Received msg:" + msg);
 });
 
 function logout() {

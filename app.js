@@ -133,6 +133,7 @@ io.on("connection", (socket) => {
     });
     socket.on("chat", (data) => {
         io.sockets.emit("chat", data);
+        console.log("new msg ---------->>>>>" + data.sender + "\n" + data.message);
     });
 });
 
