@@ -29,11 +29,11 @@ text_input.addEventListener('input', () => {
 });
 
 send_message.addEventListener("click", () => {
-    console.log(`encoRoomName : ${encoRoomName}`);
-    const roomName = encoRoomName.replace(/&#(\d+);/g, function (match, dec) {
-        return String.fromCharCode(dec);
-    });
-    console.log(`roomName : ${roomName}`);
+    //console.log(`encoRoomName : ${encoRoomName}`);
+    //const roomName = encoRoomName.replace(/&#(\d+);/g, function (match, dec) {
+    //    return String.fromCharCode(dec);
+    //});
+    //console.log(`roomName : ${roomName}`);
     const message = text_input.value.replace(/^[ \t]*[\r\n]+/gm, '');
     if (message == "") return;
     /*const message = text_input.value.replace(/[\n\r\s]+/g, ' ');
