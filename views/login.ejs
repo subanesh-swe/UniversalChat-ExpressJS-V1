@@ -1,35 +1,40 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap"/>
-    <link rel="stylesheet" href="/login.css" />
-    <link rel="icon" type="image/png" href="favicon.png">
-    <title><%= title %></title>
+    <title>CodePen - Login Form Page</title>
+    <link rel="stylesheet" href="/login.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
 <body>
-    <div class="allbody">
-      <div class="login-genel">
-        <div class="login-banner">
-          <span class="welcome">Welcome</span>
-          <div class="banner-box"><span>Chat</span></div>
-        </div>
-        <div class="login-form">
-          <form method="POST" action="">
-            <input type="email" name="email" placeholder="Email" /><br />
-            <input type="password" name="password" placeholder="Password"/><br />
-            <button>LOGIN</button>
-          </form>
-          <div class="login-footer">
-            <span>Don't have an account ? </span>
-            <span><a href="/users/register">Sign Up</a></span>
-          </div>
-        </div>
-      </div>
+    <div class="form-container">
+        <form class="form" id="loginForm" onsubmit="formSubmitHandler(event, 'loginForm');">
+            <div class="form-content">
+                <h2>Sign in</h2>
+                <!--<div class="inputBox">
+                    <input type="text" name="username" maxlength="26" required="required" />
+                    <label for="username">Username</label>
+                    <i></i>
+                </div>-->
+                <div class="inputBox">
+                    <input id="email" type="email" name="email" maxlength="26" required="required" />
+                    <label for="email">Email</label>
+                    <i></i>
+                </div>
+                <div class="inputBox">
+                    <input id="password" type="password" name="password" maxlength="26" required="required" />
+                    <label for="password">Password</label>
+                    <eyeBtn id="eye-btn" class="eye" onclick="togglePassword( 'eye-btn', 'password' )"></eyeBtn>
+                    <i></i>
+                </div>
+                <div class="links">
+                    <a href="#">Forgot Password</a>
+                    <a href="./register">Signup</a>
+                </div>
+                <input type="submit" value="Login" />
+            </div>
+        </form>
     </div>
+    <script src="/formHandler.js"></script>
 </body>
 </html>

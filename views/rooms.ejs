@@ -1,47 +1,100 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" />
-    <link rel="stylesheet" href="/login.css" />
-    <link rel="icon" type="image/png" href="favicon.png">
-    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="/login.css">
+    <link rel="stylesheet" href="/rooms.css">
+    <title><%= unescape( title ) %></title>
 </head>
 <body>
-    <div class="allbody">
-        <div class="login-genel">
-            <div class="login-banner">
-                <span class="welcome">Welcome</span>
-                <div class="banner-box"><span>Chat</span></div>
+    <div id="nav">
+        <div id="nav-content">
+            <a href="#">UniversalChat</a>
+            <div id="chat-heading">
+                <p href="#">Rooms</p>
+                <!--<username><span id="Name"><%= userName %></span></username>-->
             </div>
-            <div class="login-form">
-                <form id="postForm">
-                    <input type="text" name="roomName" placeholder="Room Name" /><br />
-                    <input type="password"  id="password" name="password" placeholder="Password" style="visibility: hidden; height: 0px;"/><br />
-                    <label for="switch">Create password:</label>
-                    <input type="checkbox" id="switch" onclick="toggleVisibility()" name="createPassword" /><br />
-                    <button type="submit">LOGIN</button><br />
-                </form>
-            </div>
-            <script>
-                function toggleVisibility() {
-                    var password = document.getElementById("password");
-                    var switchElement = document.getElementById("switch");
-                    if (switchElement.checked) {
-                        password.style.visibility = "visible";
-                        password.style.height = `fit-content`;
-                    } else {
-                        password.style.visibility = "hidden";
-                        password.style.height = `0px`;
-                    }
-                }
-            </script>
+            <a href="/users/logout">logout</a>
         </div>
     </div>
-    <script src="/formHandler.js"></script>
+    <!-- Popup container -->
+    <!--<div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="document.getElementById('popup').style.display='none'">&times;</span>
+            <p>warning messages here.</p>
+            <form method="POST" action="">
+                <input type="email" name="email" placeholder="Email" /><br />
+                <input type="password" name="password" placeholder="Password" /><br />
+                <button>LOGIN</button>
+            </form>
+            <button id="popup-button" onclick="document.getElementById('popup').style.display='none'">OK</button>
+        </div>
+    </div>-->
+    <div id="main">
+        <div class="form-container" id="popup" style="display:block;">
+            <form class="form" id="loginForm" onsubmit="event.preventDefault(); formSubmitHandler(event, 'loginForm');">
+                <div class="form-content">
+                    <h2>Sign in</h2>
+                    <div class="inputBox">
+                        <input type="text" name="roomName" maxlength="26" required="required" />
+                        <label for="roomName">Room name</label>
+                        <i></i>
+                    </div>
+                    <div class="inputBox" id="passwordContainer" style="visibility: hidden;">
+                        <input id="password" type="password" name="password" maxlength="26" required />
+                        <label for="password">Password</label>
+                        <eyeBtn id="eye-btn" class="eye" onclick="togglePassword( 'eye-btn', 'password' )"></eyeBtn>
+                        <i></i>
+                    </div>
+                    <div class="checkbox-container">
+                        <input id="createPassword" type="checkbox" onclick=" toggleVisibility( 'createPassword', 'passwordContainer' ); " name="createPassword" />
+                        <label for="createPassword" class="custom-checkbox-container"><span class="custom-checkbox"></span>Create Password</label>
+                    </div>
+                    <div class="links">
+                        <a href="#">Forgot Password</a>
+                        <a href="./register">Signup</a>
+                    </div>
+                    <input type="submit" onclick="document.getElementById('popup').style.display='block'" value="Login" />
+                </div>
+                <script>
+                    function toggleVisibility( inputId, toggleId ) {
+                        var toggleField = document.getElementById( toggleId );
+                        var switchElement = document.getElementById( inputId );
+                        if (switchElement.checked) {
+                            toggleField.style.visibility = "visible";
+                            //toggleField.style.height = `30px`;
+                            toggleField.required = true;
+                        } else {
+                            toggleField.style.visibility = "hidden";
+                            //toggleField.style.height = `0px`;
+                            toggleField.required = false;
+                        }
+                    }
+                </script>
+            </form>
+        </div>
+        <div id="room-content">
+            <div id="room-log">
+                <h4><%= roomListLabel %></h4>
+
+                <% const roomElements = roomList.map(room => { %>
+                <div class="room">
+                    <button onclick="location.href='rooms/<%= room.roomId %>'"><%= room.roomName %></button>
+                </div>
+                <% }); %>
+                <!--<%= roomElements.join('') %>-->
+            </div>
+
+            <div id="input-container">
+                <button id="createNewRoom" onclick="document.getElementById('popup').style.display='flex'">Create new Room</button>
+                <button id="joinNewRoom" onclick="document.getElementById('popup').style.display='flex'">Join new Room</button>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="/chat.js"></script>
 </body>
 </html>
