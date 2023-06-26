@@ -27,14 +27,29 @@ function formSubmitHandler(event, formId) {
         });
 }
 
-function checkInputLength(input) {
-    condole.log(`input...`);
-    if (input.value.length > input.maxLength) {
-        condole.log(`input... reached limit`);
-        input.setCustomValidity(`You cannot type more than ${input.maxLength} characters.`);
-    } else {
-        condole.log(`input... within limit`);
-        input.setCustomValidity("");
+
+var preExecuted = true;
+function chechInputLengthValidity(input, warningLabelId) {
+    const warningLabel = document.getElementById(warningLabelId);
+    var currExecuted = "nochange";
+    var warningMsg = "";
+    //console.log(`input ---- length(${input.value.length})`);
+    if (input.value.length >= input.maxLength && preExecuted) {
+        console.log(`input... reached limit`);
+        warningMsg = `Max length ${input.maxLength}`;
+        currExecuted = false;
+    } else if (!preExecuted) {
+        console.log(`input... within limit`);
+        currExecuted = true;
+     }
+    if (currExecuted !== "nochange") {
+        warningLabel.innerHTML = warningMsg;
+        input.setCustomValidity(warningMsg);
+        //if (!input.checkValidity()) {
+        //    input.reportValidity();
+        //}
+        //the above method will give notify, if not used it will be notified at submission only
+        preExecuted = currExecuted;
     }
 }
 

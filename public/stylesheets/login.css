@@ -7,11 +7,15 @@
 }
 
 :root {
-    --color-pallet-1: rgb(0 0 0); /* container background color */
-    --color-pallet-2: rgb(23, 0, 0, 0.6); /* container color */
-    --color-pallet-3: rgb(0 242 255); /* font active color */
-    --color-pallet-4: rgb(155 155 155); /* font in-active color */
-    --color-pallet-5: rgb(0 0 0); /* font color - when background color is active */
+    --color-pallet-1: rgb(0 0 0);           /* container background color */
+    --color-pallet-2: rgb(25, 25, 25, 0.65);   /* container color */
+    --color-pallet-3: rgb(0 242 255);       /* font active color */
+    --color-pallet-4: rgb(155 155 155);     /* font in-active color */
+    --color-pallet-5: rgb(0 0 0);           /* font color - when background color is active */
+    --color-pallet-6: rgb(255 65 65);       /* font in-valid hover color */
+    --color-pallet-7: rgb(255 255 255);     /* font in-valid hover text color */
+    --z-index-form-1: 0;                    /* form input z-index */
+    --z-index-form-2: 1;                    /* form input hover z-index */
 
     --body-background-color: rgb(0 0 0);
     --font-color: rgb(0 0 0);
@@ -19,10 +23,16 @@
     --form-height: 420px;
     --form-width: 380px;
     --form-input-width: 100%;
+    --form-z-index:  var(--z-index-form-2);
+    --form-input-z-index:  var(--z-index-form-2);
+    --form-input-i-z-index: var(--z-index-form-1);
+    --form-input-eye-btn-z-index:  var(--z-index-form-2);
     --form-input-margin-top: 35px;
     --form-container-background-color: var(--color-pallet-1);   /* form background color */
     --form-bachground-color: var(--color-pallet-2);             /* form color */
     --form-color: var(--color-pallet-3);                        /* text, elements color */
+    --form-invalid-hover-text-color: var(--color-pallet-7);          /* text, elements color */
+    --form-invalid-hover-color: var(--color-pallet-6);          /* text, elements color */
     --form-font-color-1: var(--color-pallet-3);                 /* font active color */
     --form-font-color-2: var(--color-pallet-4);                 /* font in-active color */
     --form-font-color-3: var(--color-pallet-5);                 /* font color - when background color is active */
@@ -85,29 +95,35 @@ body {
     overflow: hidden;
 }
 
-    .form::before {
+/*    .form::before {
         content: "";
         position: absolute;
-        top: -50%;
-        left: -50%;
-        height: var(--form-height);
-        width: var(--form-width);
-        background: linear-gradient(0deg, transparent, var(--form-color), var(--form-color));
-        transform-origin: bottom right;
-        animation: animateBorder 6s linear infinite;
-    }
-
+        bottom: calc( -130px + -1 * var(--form-height) / 2);
+        left: calc( -100px + -1 * var(--form-width) / 2);
+        height: calc(var(--form-height) * 2);
+        width: calc(var(--form-width) * 2);
+        border-radius: 50%;
+        background: conic-gradient(transparent 80%, var(--form-color));
+        transform-origin: center;
+        animation: animateBorder 6s cubic-bezier(0.62, 0.63, 0, 0.96) infinite;
+        animation-delay: 0s;
+    }*/
+    
+    /* form heading reader */
     .form::after {
         content: "";
         position: absolute;
-        top: -50%;
-        left: -50%;
-        height: var(--form-height);
-        width: var(--form-width);
-        background: linear-gradient(0deg, transparent, var(--form-color), var(--form-color));
-        transform-origin: bottom right;
+        /*        top: calc( -1.7 * var(--form-height) / 2);
+        left: calc( -100px + -1 * var(--form-width) / 2);*/
+        bottom: -75px;
+        right: -100px;
+        height: calc(var(--form-height) * 2);
+        width: calc(var(--form-width) * 2);
+        border-radius: 50%;
+        background: conic-gradient(transparent 80%, var(--form-color));
+        transform-origin: center;
         animation: animateBorder 6s linear infinite;
-        animation-delay: -3s;
+        animation-delay: 0s;
     }
 
 @keyframes animateBorder {
@@ -125,7 +141,7 @@ body {
     inset: 2px;
     border-radius: 8px;
     background-color: var(--form-bachground-color);
-    z-index: 10;
+    z-index: var(--form-z-index);
     padding: 50px 40px;
     display: flex;
     flex-direction: column;
@@ -158,7 +174,7 @@ body {
         color: var(--form-font-color-3);
         font-size: 1em;
         letter-spacing: 0.05em;
-        z-index: 10;
+        z-index: var(--form-input-z-index);
     }
         
         .inputBox input::-ms-reveal {
@@ -171,7 +187,7 @@ body {
         position: absolute;
         top: 53px;
         right: 8px;
-        z-index: 10;
+        z-index: var(--form-input-eye-btn-z-index);
         transition: 0.2s;
         /*transition: height 0.5s, width 0.5s;*/
         /*background-color: currentColor;*/
@@ -195,19 +211,16 @@ body {
         letter-spacing: 0.05em;
         transition: 0.3s;
     }
-
-    .inputBox input:valid ~ label,
-    .inputBox input:focus ~ label {
-        color: var(--form-font-color-1);
-        transform: translateX(0px) translateY(-34px);
-        font-size: 0.75em;
-    }
-
-    .inputBox input:valid ~ eyeBtn {
-        height: 20px;
-        width: 20px;
-        background-color: var(--form-font-color-1);
-        transform: translateX(0px) translateY(-31px);
+    
+    .inputBox warninglabel {
+        position: absolute;
+        right: 0;
+        padding: 20px 0px 10px;
+        font-size: 1em;
+        color:var(--form-invalid-hover-color);
+        pointer-events: none;
+        letter-spacing: 0.05em;
+        transition: 0.3s;
     }
 
     .inputBox i {
@@ -216,14 +229,48 @@ body {
         bottom: 0;
         width: 100%;
         height: 2px;
-        background: var(--form-font-color-1);
+        background: var(--form-color);
         border-radius: 4px;
         transition: 0.5s;
         pointer-events: none;
-        z-index: 9;
+        z-index: var(--form-input-i-z-index);
+    }
+
+    .inputBox input:valid ~ label,
+    .inputBox input:not(:placeholder-shown) ~ label,
+    .inputBox input:focus ~ label {
+        color: var(--form-font-color-1);
+        transform: translateX(0px) translateY(-34px);
+        font-size: 0.75em;
+    }
+    
+    .inputBox input:valid ~ warningLabel,
+    .inputBox input:not(:placeholder-shown) ~ warningLabel,
+    .inputBox input:focus ~ warningLabel {
+        /* color: var(--form-font-color-1); */
+        transform: translateX(0px) translateY(-34px);
+        font-size: 0.75em;
+    }
+
+    .inputBox input:valid ~ eyeBtn,
+    .inputBox input:invalid:not(:placeholder-shown) ~ eyeBtn {
+        height: 20px;
+        width: 20px;
+        /*background-color: var(--form-font-color-1);*/
+        transform: translateX(0px) translateY(-31px);
+    }
+
+
+    .inputBox input:invalid:not(:placeholder-shown) ~ i {
+        background: var(--form-invalid-hover-color);
+    }
+
+    .inputBox input:invalid:not(:placeholder-shown){
+        color: var(--form-invalid-hover-text-color);
     }
 
     .inputBox input:valid ~ i,
+    .inputBox input:not(:placeholder-shown) ~ i,
     .inputBox input:focus ~ i {
         height: 44px;
     }
@@ -278,8 +325,9 @@ input[type="submit"] {
     outline: none;
     background: transparent;
     color: var(--form-font-color-1);
-    padding: 11px 25px;
+    /*padding: 11px 25px;*/
     width: 100px;
+    height: 50px;
     margin-top: 10px;
     border-radius: 4px;
     font-size: 1em;
