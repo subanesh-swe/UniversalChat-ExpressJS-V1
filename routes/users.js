@@ -18,30 +18,40 @@ router.get('/login', function (req, res, next) {
 
 router.post("/login", async (req, res) => {
     try {
-        //const data = await usersDatabase.find({ email: req.body.email });
-        const data = await usersDatabase.findOne({ email: req.body.email });
+        console.log(`@/users/login [post] : req.body : ${JSON.stringify(req.body)}`);
+        var { email, password } = req.body;
+        email = email.replace(/\s+/g, '').toLowerCase();
+        //const data = await usersDatabase.find({ email: email });
+        const data = await usersDatabase.findOne({ email: email });
+        console.log(`@/users/login [post] : mongodb data : ${data}`);
         if (data != null && data.length != 0) {
-            const newPassword = req.body.password;
+            const currPassword = password;
             const userPassword = data.password;
-            bcrypt.compare(newPassword, userPassword, (err, result) => {
+            bcrypt.compare(currPassword, userPassword, (err, result) => {
                 if (err) {
                     console.error(err);
-                    return res.send("Something went wrong!");
+                    res.json({ result: false, alert: "Something went wrong. ensure you have entered a valid input, please try again after sometime or try contacting the admin!!!" });
+                    //return res.send("Something went wrong!");
                 }
 
                 if (result) {
+                    res.cookie('cookieName', 'cookieValue', { secure: true });
                     req.session.name = data.username;
                     console.log(req.session);
-                    return res.redirect("/");
+                    res.json({ result: true, redirect: `/`, alert: "login successful!" });
+                    //return res.redirect("/");
                 } else {
-                    return res.send("Invalid password!");
+                    res.json({ result: false, alert: "Invalid Password!!!" });
+                    //return res.send("Invalid password!");
                 }
             });
         } else {
-            return res.send("There is no such user!");
+            res.json({ result: false, alert: "Invalid Username, there is no such user exist!!!" });
+            //return res.send("There is no such user!");
         }
     } catch (error) {
         console.log(error);
+        res.json({ result: false, alert: "Something went wrong, try again after sometime or try contacting the admin!!!" });
         //next(createError(400, error));
     }
 });
@@ -56,21 +66,40 @@ router.get('/register', function (req, res, next) {
 
 router.post("/register", async (req, res) => {
     try {
-        const data = await usersDatabase.find({ email: req.body.email });
+        console.log(`@/users/register [post] : req.body : ${JSON.stringify(req.body)}`);
+        var { username, email, password } = req.body;
+        email = email.replace(/\s+/g, '').toLowerCase();
+        username = username.replace(/\s+/g, '').toLowerCase();
+        //const data = await usersDatabase.find({ email: email });
+        const data = await usersDatabase.find({
+            $or: [
+                { email: email },
+                { username: username }
+            ]
+        });
+        console.log(`@/users/login [post] : mongodb data : ${data}`);
+
         if (data.length == 0) {
-            const newPassword = req.body.password;
-            const encryptNewPassword = await bcrypt.hash(newPassword, 10);
+            const currPassword = password;
+            const encryptedNewPassword = await bcrypt.hash(currPassword, 10);
             await usersDatabase.create({
-                username: req.body.username,
-                email: req.body.email,
-                password: encryptNewPassword
+                username: username,
+                email: email,
+                password: encryptedNewPassword
             });
-            res.redirect('/');
+            res.json({ result: true, redirect: `/`, alert: "registration successful! " });
+            //res.redirect('/');
         } else {
-            return res.send("Your account already exist!");
+            //return res.send();
+            if (data[0].email === email) {
+                res.json({ result: false, alert: `Your account already exist with mail id : ${email}, please login!` });
+            } else if (data[0].username === username) {
+                res.json({ result: false, alert: `The Username ${username} is notavailable, try creating new!` });
+            }
         }
     } catch (error) {
         console.log(error);
+        res.json({ result: false, alert: "Something went wrong, try again after sometime or try contacting the admin!!!" });
     }
 });
 

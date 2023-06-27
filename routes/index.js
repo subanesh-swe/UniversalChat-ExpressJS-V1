@@ -1,4 +1,6 @@
+const { error } = require('console');
 const express = require('express');
+const bcrypt = require("bcrypt");
 const session = require('express-session');
 const path = require('path');
 const roomsDatabase = require(path.join(__dirname, '..', 'mongooseModels', 'roomsDatabase.js'));
@@ -18,51 +20,112 @@ router.get('/', requireLogin, function (req, res, next) {
     res.redirect('/index/rooms')
 });
 
-
-router.get('/index/rooms', requireLogin, function (req, res, next) {
-    res.render("rooms", { title: "Rooms" });
+router.get('/index/rooms', requireLogin, async (req, res, next) => {
+    var roomListData;
+    var roomListLabel;
+    try {
+        //roomListData = await roomsDatabase.find({ participants: req.session.name });
+        roomListData = await roomsDatabase.find({ participants: { $in: [req.session.name] } });
+        //console.log(`rooms : ${roomListData}`);
+        if (roomListData.length === 0) {
+            roomListLabel = "You haven't joined any rooms yet. Please create a new room or join a room";
+            console.log('No data found.');
+        } else {
+            roomListLabel = "List of rooms you have joined";
+            console.log("data found");
+        }
+    } catch (err) {
+        roomListData = [];
+        roomListLabel = "Error while finding the rooms, If you have already joined any team please try again after something.";
+        console.log(err);
+    } finally {
+        res.render("rooms", {
+            title: "Rooms",
+            userName: req.session.name,
+            roomListLabel: roomListLabel,
+            roomList: roomListData,
+        });
+    }
 });
 
 router.post("/index/rooms", async (req, res) => {
     try {
+
+        //let resultJson = {};
         console.log(`@/index/rooms [post] : req.body : ${JSON.stringify(req.body)}`);
-        var { roomName, createPassword, password } = req.body;
-        if (!createPassword || createPassword !== "on") {
-            password = "";
+        var { formTitleSender, roomNameOrId, enabelPassword, password } = req.body;
+
+        //console.log(`formTitleSender: ${formTitleSender}, roomNameOrId: ${roomNameOrId}, enabelPassword: ${enabelPassword}, password: ${password} `)
+
+        if (roomNameOrId == null || formTitleSender == null || (formTitleSender !== "Create new Room" && formTitleSender !== "Join new Room")) {
+            // throw new Error("Input field invalid !!! either due to invalid access to server or communication error");
+            return res.json({ result: false, alert: "Input field invalid !!! either due to invalid access to server or communication error, try again after sometime or try contacting the admin!!!" });
         }
 
-        let newRoomId;
+        let currRoomId;
         let data;
-        do {
-            newRoomId = Math.random().toString(36).substring(2) + Date.now().toString(36);
-            data = await roomsDatabase.find({ roomId: newRoomId });
-        } while (data.length !== 0);
+        let currPassword;
 
-        await roomsDatabase.create({
-            roomId: newRoomId,
-            roomName: roomName,
-            password: password,
-            participants: [req.session.name]
-        });
+        if (enabelPassword != null) {  // enabelPassword === "on"
+            currPassword = password;
+        } else {
+            currPassword = "";
+        }
 
-        res.json({ result: true, redirect: `/index/rooms/${newRoomId}` });
+        if (formTitleSender === "Create new Room") {
+            /**************************************************** Create new Room ****************************************/
+            do {
+                currRoomId = Math.random().toString(36).substring(2) + Date.now().toString(36);
+                data = await roomsDatabase.find({ roomId: currRoomId });
+                console.log(`@/index/rooms [post] : [Create room] mongodb data : ${data}`);
+            } while (data.length !== 0);
 
-        //res.json({
-        //    result: false, alert: `roomId: ${newRoomId},roomName: ${roomName},password: ${password},createPassword: ${createPassword}, req: ${JSON.stringify(req.body)}`, redirect: "/index/rooms/chat"
-        //});
+            const encryptedNewPassword = await bcrypt.hash(currPassword, 10);
+
+            await roomsDatabase.create({
+                roomId: currRoomId,
+                roomName: roomNameOrId,
+                password: encryptedNewPassword,
+                participants: [req.session.name]
+            });
+            return res.json({ result: true, redirect: `/index/rooms/${currRoomId}`, alert: `New room '${roomNameOrId}' created with ID: '${currRoomId}', Password: '${password}' ` });
+
+
+        } else if (formTitleSender === "Join new Room") {
+            /**************************************************** Join new Room ****************************************/
+            currRoomId = roomNameOrId;
+            data = await roomsDatabase.findOne({ roomId: currRoomId });
+            console.log(`@/index/rooms [post] : [join room] mongodb data : ${data}`);
+            if (data != null && data.length != 0) {
+
+                const roomPassword = data.password;
+                bcrypt.compare(currPassword, roomPassword, async (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        return res.json({ result: false, alert: "Something went wrong. ensure you have entered a valid input, please try again after sometime or try contacting the admin!!!" });
+                    } else if (result) {
+                        data.participants.push(req.session.name);
+                        await data.save();
+                        return res.json({ result: true, redirect: `/index/rooms/${currRoomId}`, alert: "Join successful!" });
+                    } else {
+                        return res.json({ result: false, alert: "Invalid Password!!!" });
+                    }
+                });
+            } else {
+                return res.json({ result: false, alert: "Invalid Room Id, there is no such room exist!!!" });
+            }
+
+        }
+
+        //return res.json({ result: false, alert: "if- else end -->>> Input field invalid !!! either due to invalid access to server or communication error, try again after sometime or try contacting the admin!!!" });
+
     } catch (error) {
         console.log(`Error @/index/rooms [post] : ${error}`);
-        res.json({ result: false, alert: "Something went wrong, try again after sometime or try contacting the admin!!!" });
+        return res.json({ result: false, alert: "Something went wrong, try again after sometime or try contacting the admin!!!" });
     }
-    //// Create new instance without array elements
-    //const myModel1 = new MyModel({ name: 'example' });
-    //await myModel1.save();
-
-    //// Create new instance with array elements
-    //const myModel2 = new MyModel({ name: 'example', list: ['element1', 'element2'] });
-    //await myModel2.save();
-
 });
+
+
 
 
 router.get('/index/rooms/:roomId', requireLogin, async (req, res, next) => {
