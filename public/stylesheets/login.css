@@ -1,21 +1,33 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 500px) {
     .form {
         transform: scale(0.85);
     }
 }
 
+@media only screen and (max-width: 400px) {
+    .form {
+        transform: scale(0.8);
+    }
+
+        .form::before {
+            transform: scaleX(0.95) translateX(-12px);
+        }
+}
+
 :root {
-    --color-pallet-1: rgb(0 0 0);           /* container background color */
-    --color-pallet-2: rgb(25, 25, 25, 0.65);   /* container color */
-    --color-pallet-3: rgb(0 242 255);       /* font active color */
-    --color-pallet-4: rgb(155 155 155);     /* font in-active color */
-    --color-pallet-5: rgb(0 0 0);           /* font color - when background color is active */
-    --color-pallet-6: rgb(255 65 65);       /* font in-valid hover color */
-    --color-pallet-7: rgb(255 255 255);     /* font in-valid hover text color */
-    --z-index-form-1: 0;                    /* form input z-index */
-    --z-index-form-2: 1;                    /* form input hover z-index */
+    --color-pallet-1: rgb(0 0 0);               /* container background color */
+    --color-pallet-2: rgb(25 25 25 / 0.85);     /* container color */
+    --color-pallet-3: rgb(0 242 255);           /* font active color */
+    --color-pallet-4: rgb(185 185 185);         /* font in-active color */
+    --color-pallet-5: rgb(0 0 0);               /* font color - when background color is active */
+    --color-pallet-6: rgb(255 65 65);           /* font in-valid hover color */
+    --color-pallet-7: rgb(255 255 255);         /* font in-valid hover text color */
+    --z-index-form-1: 0;                        /* form input z-index */
+    --z-index-form-2: 1;                        /* form input hover z-index */
+    --radar-color-1: rgba(0 242 255 / 0.20);    /* radar inner lines */
+    --radar-color-2: rgb(0 242 255 / 0.50);     /* radar inner radiend color */
 
     --body-background-color: rgb(0 0 0);
     --font-color: rgb(0 0 0);
@@ -31,7 +43,7 @@
     --form-container-background-color: var(--color-pallet-1);   /* form background color */
     --form-bachground-color: var(--color-pallet-2);             /* form color */
     --form-color: var(--color-pallet-3);                        /* text, elements color */
-    --form-invalid-hover-text-color: var(--color-pallet-7);          /* text, elements color */
+    --form-invalid-hover-text-color: var(--color-pallet-7);     /* text, elements color */
     --form-invalid-hover-color: var(--color-pallet-6);          /* text, elements color */
     --form-font-color-1: var(--color-pallet-3);                 /* font active color */
     --form-font-color-2: var(--color-pallet-4);                 /* font in-active color */
@@ -95,36 +107,30 @@ body {
     overflow: hidden;
 }
 
-/*    .form::before {
+    .form::before {
         content: "";
         position: absolute;
-        bottom: calc( -130px + -1 * var(--form-height) / 2);
-        left: calc( -100px + -1 * var(--form-width) / 2);
-        height: calc(var(--form-height) * 2);
-        width: calc(var(--form-width) * 2);
-        border-radius: 50%;
-        background: conic-gradient(transparent 80%, var(--form-color));
-        transform-origin: center;
-        animation: animateBorder 6s cubic-bezier(0.62, 0.63, 0, 0.96) infinite;
-        animation-delay: 0s;
-    }*/
-    
-    /* form heading reader */
+        top: 0%;
+        left: 0%;
+        box-shadow: inset 0 0 20vmin rgb(0, 0, 0, 1.00);
+        padding: 5px;
+        height: calc(var(--form-height) - 10px );
+        width: calc(var(--form-width) - 10px);
+        background: repeating-radial-gradient( transparent, transparent 4.5%, var(--form-color) 5%, transparent 5.5% ), linear-gradient( transparent 49.7%, var(--radar-color-1) 49.9%, var(--radar-color-1) 50.1%, transparent 50.3% ), linear-gradient( to right, transparent 49.7%, var(--radar-color-1) 49.9%, var(--radar-color-1) 50.1%, transparent 50.3% );
+        background: repeating-radial-gradient(circle at center, transparent, transparent 4.5%, var(--form-color) 5%, transparent 5.5% ) content-box, linear-gradient( transparent 49.7%, var(--radar-color-1) 49.9%, var(--radar-color-1) 50.1%, transparent 50.3% ) content-box, linear-gradient( to right, transparent 49.7%, var(--radar-color-1) 49.9%, var(--radar-color-1) 50.1%, transparent 50.3% ) content-box, radial-gradient(var(--radar-color-2), transparent) content-box, linear-gradient(to bottom right, #000, #000) border-box;
+    }
+
     .form::after {
         content: "";
         position: absolute;
-        /*        top: calc( -1.7 * var(--form-height) / 2);
-        left: calc( -100px + -1 * var(--form-width) / 2);*/
-        bottom: -75px;
-        right: -100px;
-        height: calc(var(--form-height) * 2);
-        width: calc(var(--form-width) * 2);
-        border-radius: 50%;
+        top: -75px;
+        left: -75px;
+        height: calc(var(--form-height) + 150px);
+        width: calc(var(--form-width) + 150px);
         background: conic-gradient(transparent 80%, var(--form-color));
         transform-origin: center;
         animation: animateBorder 6s linear infinite;
-        animation-delay: 0s;
-    }
+        animation-delay: 0s;}
 
 @keyframes animateBorder {
     0% {
@@ -140,11 +146,12 @@ body {
     position: absolute;
     inset: 2px;
     border-radius: 8px;
-    background-color: var(--form-bachground-color);
-    z-index: var(--form-z-index);
     padding: 50px 40px;
     display: flex;
     flex-direction: column;
+    background-color: var(--form-bachground-color);
+    box-shadow: inset 0 0 2vmin rgb(0, 0, 0, 1.00);
+    z-index: var(--form-z-index);
 }
 
     .form-content h2 {
@@ -236,7 +243,7 @@ body {
         z-index: var(--form-input-i-z-index);
     }
 
-    .inputBox input:valid ~ label,
+/*    .inputBox input:valid ~ label,*/
     .inputBox input:not(:placeholder-shown) ~ label,
     .inputBox input:focus ~ label {
         color: var(--form-font-color-1);
@@ -244,7 +251,7 @@ body {
         font-size: 0.75em;
     }
     
-    .inputBox input:valid ~ warningLabel,
+/*    .inputBox input:valid ~ warningLabel,*/
     .inputBox input:not(:placeholder-shown) ~ warningLabel,
     .inputBox input:focus ~ warningLabel {
         /* color: var(--form-font-color-1); */
@@ -252,7 +259,7 @@ body {
         font-size: 0.75em;
     }
 
-    .inputBox input:valid ~ eyeBtn,
+/*    .inputBox input:valid ~ eyeBtn,*/
     .inputBox input:invalid:not(:placeholder-shown) ~ eyeBtn {
         height: 20px;
         width: 20px;
@@ -269,9 +276,9 @@ body {
         color: var(--form-invalid-hover-text-color);
     }
 
-    .inputBox input:valid ~ i,
-    .inputBox input:not(:placeholder-shown) ~ i,
-    .inputBox input:focus ~ i {
+/*    .inputBox input:valid ~ i,*/
+    .inputBox input:focus ~ i,
+    .inputBox input:not(:placeholder-shown) ~ i{
         height: 44px;
     }
 
