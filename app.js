@@ -37,11 +37,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public', 'stylesheets')));
 app.use(express.static(path.join(__dirname, 'public', 'scripts')));
+app.use('/socket.io', express.static(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist')));
 
 //this will lose all users cookies after server restart
 //app.use(session({ secret: "UniversalChat", resave: false, saveUninitialized: true }));
 //mongoose will store cookies, so we will not lose all users cookies after server restart
 //const store = new MongoDBStore({ uri: process.env.MONGO_URI, collection: 'sessions' });
+
 const store = new MongoDBStore({
     uri: process.env.MONGO_URI,
     collection: 'sessions',
@@ -87,24 +89,6 @@ app.use('/users/login', (req, res, next) => {
     next();
 });
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/admin', adminRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: req.app.get('env') === 'development' ? err : {}
-    });
-});
-
 /*app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4000');
     next();
@@ -126,19 +110,75 @@ const io = socket(4000, {
     }
 });
 
-io.on("connection", (socket) => {
-    console.log(socket.id + " a user connected");
+//io.on("connection", (socket) => {
+//    console.log("Socket --> Connected <-- " + socket.id);
+//    socket.on("disconnect", () => {
+//        console.log("Socket --> Disconnected <-- " + socket.id);
+//    });
+
+//    socket.on("chat", (data) => {
+//        io.sockets.emit("chat", data);
+//        console.log("new msg ---------->>>>>" + data.sender + "\n" + data.message);
+//    });
+//});
+
+
+io.on('connection', socket => {
+
+    const { userId : UserId } = socket.handshake.query;
+    socket.join(UserId);
+
+    console.log(`Socket ---> Connected <---   UserId: ${UserId}, SocketId: ${socket.id}, Query:${JSON.stringify(socket.handshake.query)}`);
+
     socket.on("disconnect", () => {
-        console.log("user disconnected");
+        console.log(`Socket --> Disconnected <--  UserId: ${UserId}, SocketId: ${socket.id}`);
     });
-    socket.on("chat", (data) => {
-        io.sockets.emit("chat", data);
-        console.log("new msg ---------->>>>>" + data.sender + "\n" + data.message);
-    });
+
+    socket.on('sendMessage', ( receivedData ) => {
+        const { recipientIds, roomId, data } = receivedData;
+        console.log(`Received message by UserId: ${UserId}, SocketId: ${socket.id} ==> roomId:'${roomId}', recipientIds:'${recipientIds}', data:'${JSON.stringify(data)}' `);
+
+        recipientIds.forEach(recipientId => {
+            socket.broadcast.to(recipientId).emit('receiveMessage', receivedData );
+            console.log(`Sending message by UserId: ${UserId}, SocketId: ${socket.id} ==> roomId:'${roomId}', recipientId:'${recipientId}', data:'${JSON.stringify(data)}' `);
+        })
+        //recipients.forEach(recipient => {
+        //    const newRecipients = recipients.filter(r => r !== recipient)
+        //    newRecipients.push(id)
+        //    socket.broadcast.to(recipient).emit('receiveMessage', {
+        //        recipients: newRecipients, sender: id, data
+        //    })
+        //})
+    })
+})
+
+// Make io accessible to our router
+app.use(function (req, res, next) {
+    req.io = io;
+    next();
 });
 
 /*
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 */
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/admin', adminRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: req.app.get('env') === 'development' ? err : {}
+    });
+});
+
 module.exports = app;
