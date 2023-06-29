@@ -60,10 +60,14 @@ store.on('error', function (error) {
 });
 
 //app.use(cookieParser());
-app.use(require('express-session')({
+app.use(session({
     secret: 'This is a secret',
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+        'cookieName': "Subanesh's_server",
+        'cookieValue': "Universal chat by Subanesh",
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+        httpOnly: true,
+        secure: true,
     },
     store: store,
     resave: true,

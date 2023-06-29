@@ -1,18 +1,27 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const { randomUUID } = require('crypto');
 const path = require('path');
 const usersDatabase = require(path.join(__dirname, '..', 'mongooseModels', 'usersDatabase.js'));
 const session = require("express-session");
 const createError = require('http-errors');
 const { create } = require("domain");
 
+
 const router = express.Router();
 
 router.get('/login', function (req, res, next) {
-    if (!req.session.name) {
-        res.render("login", { title: "Sign Up" });
-    } else {
-        res.redirect("/");
+    try {
+        console.log(`@/users/login [Get] : req : ${JSON.stringify(req.session)}`);
+
+        if (!req.session.name) {
+            res.render("login", { title: "Sign Up" });
+        } else {
+            res.redirect("/");
+        }
+    } catch (err) {
+        console.log(`@/users/login [Get] : Error : ${err}`);
+
     }
 });
 
@@ -35,8 +44,19 @@ router.post("/login", async (req, res) => {
                 }
 
                 if (result) {
-                    res.cookie('cookieName', 'cookieValue', { secure: true });
+                    //res.cookie("Subanesh's_server", "Universal chat by Subanesh", { secure: true });
+                    //res.cookie('loggedIn', true, { expires: new Date(Date.now() + 900000), httpOnly: true });
+                    console.log(`Before cookie set: '${JSON.stringify(req.session.cookie)}'`);
+                    const plainCookie = JSON.parse( JSON.stringify( req.session.cookie ) );
+                    console.log(`Plain cookie : '${JSON.stringify(plainCookie)}'`);
+                    plainCookie['expires'] = new Date(Date.now() + plainCookie['originalMaxAge'] );
+                    delete plainCookie['originalMaxAge']; //res.cookie({}) accepts cookie materials only, even if we send something extra, they wont be send
+                    res.cookie(req.session.cookie.cookieName, req.session.cookie.cookieValue, plainCookie);
+                    // Set-Cookie: undefined=undefined; Max-Age=604794; Path=/; Expires=Thu, 06 Jul 2023 02:42:33 GMT; HttpOnly; Secure
                     req.session.name = data.username;
+                    req.session.userId = data.userId;
+                    console.log(`After cookie set: '${JSON.stringify(req.session.cookie)}'`);
+                    console.log(`Plain cookie : '${JSON.stringify(plainCookie)}'`);
                     console.log(req.session);
                     res.json({ result: true, redirect: `/`, alert: "login successful!" });
                     //return res.redirect("/");
@@ -82,10 +102,13 @@ router.post("/register", async (req, res) => {
         if (data.length == 0) {
             const currPassword = password;
             const encryptedNewPassword = await bcrypt.hash(currPassword, 10);
+            const currUserId = randomUUID();
+
             await usersDatabase.create({
+                userId: currUserId,
                 username: username,
                 email: email,
-                password: encryptedNewPassword
+                password: encryptedNewPassword,
             });
             res.json({ result: true, redirect: `/`, alert: "registration successful! " });
             //res.redirect('/');

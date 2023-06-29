@@ -4,28 +4,45 @@ const bcrypt = require("bcrypt");
 const session = require('express-session');
 const path = require('path');
 const roomsDatabase = require(path.join(__dirname, '..', 'mongooseModels', 'roomsDatabase.js'));
+const socket = require('socket.io');
 
-const app = express();
 const router = express.Router();
 
 function requireLogin(req, res, next) {
-    if (req.session && req.session.name) {
         next();
-    } else {
-        res.redirect('/users/login');
-    }
+    //if (req.session.name) {
+    //    console.log(`User has made login successful ...`);
+    //    next();
+    //} else {
+    //    console.log(`User hasn't made login successful ...`);
+    //    res.redirect('/users/login');
+    //}
 }
 
 router.get('/', requireLogin, function (req, res, next) {
-    res.redirect('/index/rooms')
+    //if (req.session && req.session.name) {
+    //    console.log(`User has made login successful ...`);
+        res.redirect('/index/rooms')
+    //} else {
+    //    console.log(`User hasn't made login successful ...`);
+    //    res.redirect('/users/login');
+    //}
 });
 
 router.get('/index/rooms', requireLogin, async (req, res, next) => {
+    console.log(`req.session.name: ${req.session.name}`);
+    try {
+        console.log(`@/index/rooms [Get] : req : ${JSON.stringify(req.session)}`);
+    } catch (err) {
+        console.log(`@/index/rooms [Get] : Error : ${err}`);
+
+    }
     var roomListData;
     var roomListLabel;
     try {
-        //roomListData = await roomsDatabase.find({ participants: req.session.name });
-        roomListData = await roomsDatabase.find({ participants: { $in: [req.session.name] } });
+
+        //roomListData = await roomsDatabase.find({ participants: { $in: [req.session.name] } });
+        roomListData = await roomsDatabase.find({ participants: { $elemMatch: { username: req.session.name } } });
         //console.log(`rooms : ${roomListData}`);
         if (roomListData.length === 0) {
             roomListLabel = "You haven't joined any rooms yet. Please create a new room or join a room";
@@ -50,7 +67,9 @@ router.get('/index/rooms', requireLogin, async (req, res, next) => {
 
 router.post("/index/rooms", async (req, res) => {
     try {
-
+        var temp = { sender : "subanesh-swe", message : "this is a reply from@/index/rooms [post] "};
+        req.io.sockets.emit("chat", temp);
+        console.log("new msg ---------->>>>>" + temp.sender + "\n" + temp.message);
         //let resultJson = {};
         console.log(`@/index/rooms [post] : req.body : ${JSON.stringify(req.body)}`);
         var { formTitleSender, roomNameOrId, enabelPassword, password } = req.body;
@@ -74,11 +93,12 @@ router.post("/index/rooms", async (req, res) => {
 
         if (formTitleSender === "Create new Room") {
             /**************************************************** Create new Room ****************************************/
-            do {
-                currRoomId = Math.random().toString(36).substring(2) + Date.now().toString(36);
-                data = await roomsDatabase.find({ roomId: currRoomId });
-                console.log(`@/index/rooms [post] : [Create room] mongodb data : ${data}`);
-            } while (data.length !== 0);
+            currRoomId = Math.random().toString(36).substring(2) + Date.now().toString(36);
+            //do {
+            //    currRoomId = Math.random().toString(36).substring(2) + Date.now().toString(36);
+            //    data = await roomsDatabase.find({ roomId: currRoomId });
+            //    console.log(`@/index/rooms [post] : [Create room] mongodb data : ${data}`);
+            //} while (data.length !== 0);
 
             const encryptedNewPassword = await bcrypt.hash(currPassword, 10);
 
@@ -86,7 +106,12 @@ router.post("/index/rooms", async (req, res) => {
                 roomId: currRoomId,
                 roomName: roomNameOrId,
                 password: encryptedNewPassword,
-                participants: [req.session.name]
+                //participants: [req.session.name]
+                participants: [{
+                    username: req.session.name,
+                    userId: req.session.userId,
+                    admin: true
+                }]
             });
             return res.json({ result: true, redirect: `/index/rooms/${currRoomId}`, alert: `New room '${roomNameOrId}' created with ID: '${currRoomId}', Password: '${password}' ` });
 
@@ -104,7 +129,12 @@ router.post("/index/rooms", async (req, res) => {
                         console.error(err);
                         return res.json({ result: false, alert: "Something went wrong. ensure you have entered a valid input, please try again after sometime or try contacting the admin!!!" });
                     } else if (result) {
-                        data.participants.push(req.session.name);
+                        //data.participants.push(req.session.name);
+                        data.participants.push({
+                            username: req.session.name,
+                            userId: req.session.userId,
+                            admin: false
+                        });
                         await data.save();
                         return res.json({ result: true, redirect: `/index/rooms/${currRoomId}`, alert: "Join successful!" });
                     } else {
@@ -134,11 +164,19 @@ router.get('/index/rooms/:roomId', requireLogin, async (req, res, next) => {
         if (reqRoomId == null) {
             return res.redirect('/index/rooms');
         }
-        const data = await roomsDatabase.findOne({ roomId: reqRoomId, participants: req.session.name });
+        //const data = await roomsDatabase.findOne({ roomId: reqRoomId, participants: req.session.name });
+        const data = await roomsDatabase.findOne({ roomId: reqRoomId, participants: { $elemMatch: { username: req.session.name } }  });
         console.log(`@/index/rooms/chat/:roomId [get] : data : ${JSON.stringify(data)}`);
         if (data != null && data.length != 0) {
-            console.log(`data.roomName : ${ data.roomName }`)
-            res.render('chat', { title: "SWE's world", roomId: data.roomId, roomName: data.roomName, userName: req.session.name });
+            console.log(`data.roomName : ${data.roomName}`)
+            // Convert the MongoDB document to a plain JavaScript object
+            const plainData = data.toObject();
+            // Remove the unwanted properties from the plain JavaScript object
+            delete plainData._id;
+            delete plainData['updatedAt'];
+            delete plainData.__v;
+            //console.log(`Sending data : ${JSON.stringify(plainData)}`);
+            res.render('chat', { title: "SWE's world", roomData: JSON.stringify(plainData), roomId: data.roomId, roomName: data.roomName, userName: req.session.name, userId: req.session.userId });
         } else {
             return res.redirect('/index/rooms');
         }
