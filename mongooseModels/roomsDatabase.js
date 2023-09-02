@@ -1,5 +1,20 @@
 const mongoose = require('mongoose');
 
+const participantSchema = mongoose.Schema({
+    username: {
+        type: String,
+        required: true
+    },
+    userId: {
+        type: String,
+        required: true
+    },
+    admin: {
+        type: Boolean,
+        default: false
+    }
+});
+
 const roomsSchema = mongoose.Schema({
     roomId: {
         type: String,
@@ -14,7 +29,7 @@ const roomsSchema = mongoose.Schema({
         require: true
     },
     participants: {
-        type: [String],
+        type: [participantSchema],
         default: []
     },
 }, { timestamps: true });

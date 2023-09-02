@@ -1,0 +1,286 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+
+:root {
+    --color-pallet-1: rgb(75 173 247); /*container background color*/
+    --color-pallet-2: rgb(75 173 247); /*container color*/
+    --color-pallet-3: rgb(75 173 247); /*text color*/
+
+    --body-color: rgb(0 0 0);
+    --font-color: rgb(0 0 0);
+    --font-family: 'Poppins', sans-serif;
+    --form-container-bachground-color: 0 0 0;
+    --form-bachground-color: 0 0 0;
+    --form-color: 0 0 0;
+    --theme-background: 0 0 0;
+    --theme-light: 0 0 0;
+    --theme-medium: 0 0 0;
+    --theme-dark: 0 0 0;
+    --nav-color: rgb(255, 255, 255, 0.25);
+    --nav-font-size: 1rem;
+    --nav-font-weight: 700;
+    --chat-box-color: rgb(0, 0, 0, 0.00);
+    --chat-message-username-font-size: 0.85rem;
+    --chat-message-username-font-weight: 700;
+    --chat-message-font-size: 0.85rem;
+    --chat-message-font-weight: 600;
+    --chat-message-time-font-size: 0.75rem;
+    --chat-message-time-font-weight: 400;
+    --chat-friend-message-color: rgb(255, 255, 255, 0.25);
+    --chat-friend-message-font-color: var(--font-color);
+    --chat-self-message-color: rgb(255, 255, 255, 0.50);
+    --chat-self-message-font-color: var(--font-color);
+    --input-container-font-size: 0.85rem;
+    --input-container-font-weight: 600;
+    --input-container-color: rgb(255, 255, 255, 0.25);
+    --input-message-color: rgb(255, 255, 255, 0.25);
+    --send-message-color: rgb(255, 255, 255, 0.25);
+    --send-message-hover-color: rgb(255, 255, 255, 0.50);
+    --scrollbar-track-color: var(--body-color);
+    --scrollbar-thumb-color: var(--font-color);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    /*    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;*/
+    background: #23242a;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #23242a;
+}
+
+.form {
+    position: relative;
+    width: 380px;
+    height: 420px;
+    background: #1c1c1c;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+    .form::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 380px;
+        height: 420px;
+        background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
+        transform-origin: bottom right;
+        animation: animateBorder 6s linear infinite;
+    }
+
+    .form::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 380px;
+        height: 420px;
+        background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
+        transform-origin: bottom right;
+        animation: animateBorder 6s linear infinite;
+        animation-delay: -3s;
+    }
+
+@keyframes animateBorder {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.form-content {
+    position: absolute;
+    inset: 2px;
+    border-radius: 8px;
+    background-color: #28292d;
+    z-index: 10;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+    .form-content h2 {
+        color: #45f3ff;
+        font-weight: 500;
+        align-items: center;
+        letter-spacing: 0.1em;
+    }
+
+.inputBox {
+    position: relative;
+    width: 300px;
+    margin-top: 35px;
+}
+
+    .inputBox #password {
+        padding-right: 35px;
+    }
+
+    .inputBox input {
+        position: relative;
+        width: 100%;
+        padding: 20px 10px 10px;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #23242a;
+        font-size: 1em;
+        letter-spacing: 0.05em;
+        z-index: 10;
+    }
+
+        .inputBox input::-ms-reveal {
+            display: none;
+        }
+
+    .inputBox eyeBtn {
+        height: 0;
+        width: 10px;
+        position: absolute;
+        top: 53px;
+        right: 8px;
+        z-index: 10;
+        transition: 0.2s;
+        /*transition: height 0.5s, width 0.5s;*/
+        /*background-color: currentColor;*/
+        /*background-color: #23242a;*/
+        cursor: pointer;
+        border: none;
+        outline: none;
+    }
+    /*.inputBox eyeBtn:is(:hover, :active) {
+            transform: scale(0.5);
+            background-color: white;
+        }*/
+
+    .inputBox label {
+        position: absolute;
+        left: 0;
+        padding: 20px 0px 10px;
+        font-size: 1em;
+        color: #8f8f8f;
+        pointer-events: none;
+        letter-spacing: 0.05em;
+        transition: 0.3s;
+    }
+
+    .inputBox input:valid ~ label,
+    .inputBox input:focus ~ label {
+        color: #45f3ff;
+        transform: translateX(0px) translateY(-34px);
+        font-size: 0.75em;
+    }
+
+    .inputBox input:valid ~ eyeBtn {
+        height: 20px;
+        width: 20px;
+        background-color: #45f3ff;
+        transform: translateX(0px) translateY(-31px);
+    }
+
+    .inputBox i {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background: #45f3ff;
+        border-radius: 4px;
+        transition: 0.5s;
+        pointer-events: none;
+        z-index: 9;
+    }
+
+    .inputBox input:valid ~ i,
+    .inputBox input:focus ~ i {
+        height: 44px;
+    }
+
+.eye {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='black' class='bi bi-eye' viewBox='0 0 16 16'%3E%3Cpath d='M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z'/%3E%3Cpath d='M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z'/%3E%3C/svg%3E");
+}
+
+.eye-fill {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='black' class='bi bi-eye-fill' viewBox='0 0 16 16'%3E%3Cpath d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z'/%3E%3Cpath d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z'/%3E%3C/svg%3E");
+}
+
+.eye-slash {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='black' class='bi bi-eye-slash' viewBox='0 0 16 16'%3E%3Cpath d='M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z'/%3E%3Cpath d='M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z'/%3E%3Cpath d='M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z'/%3E%3C/svg%3E");
+}
+
+.eye-slash-fill {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='black' class='bi bi-eye-slash-fill' viewBox='0 0 16 16'%3E%3Cpath d='m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z'/%3E%3Cpath d='M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z'/%3E%3C/svg%3E");
+}
+
+.links {
+    display: flex;
+    justify-content: space-between;
+}
+
+    .links a {
+        margin: 10px 0;
+        font-size: 0.75em;
+        color: #8f8f8f;
+        text-decoration: none;
+    }
+
+        .links a:hover,
+        .links a:nth-child(2) {
+            color: #45f3ff;
+        }
+
+input[type="submit"] {
+    border: 1px solid #45f3ff;
+    outline: none;
+    background: transparent;
+    color: #fff;
+    padding: 11px 25px;
+    width: 100px;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+    input[type="submit"]:hover {
+        background: #45f3ff;
+        color: #23242a;
+    }
+
+    input[type="submit"]:active {
+        opacity: 0.8;
+    }

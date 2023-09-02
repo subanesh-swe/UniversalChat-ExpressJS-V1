@@ -32,7 +32,7 @@
     --send-message-color: rgb(255, 255, 255, 0.25);
     --send-message-hover-color: rgb(255, 255, 255, 0.50);
     --scrollbar-track-color: var(--body-color);
-    --scrollbar-thumb-color: var(--font-color);
+    --scrollbar-thumb-color: var(--chat-self-message-color);
 }
 
 
@@ -497,6 +497,11 @@ body {
         flex-flow: row wrap;
         /*cursor: pointer;*/
     }
+
+        .chat.header {
+            justify-content: center;
+            flex-flow: row wrap;
+        }
 
         .chat.friend {
             flex-flow: row wrap;

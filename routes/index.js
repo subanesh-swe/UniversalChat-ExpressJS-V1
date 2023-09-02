@@ -6,37 +6,30 @@ const path = require('path');
 const roomsDatabase = require(path.join(__dirname, '..', 'mongooseModels', 'roomsDatabase.js'));
 const socket = require('socket.io');
 
+const app = express();
 const router = express.Router();
 
-function requireLogin(req, res, next) {
+router.use( function (req, res, next) {
+    if (req.session && req.session.name) {
+        console.log(`@/index > Index Router [ router.use All ] : Authentication verified, req[path]: '${req.path}'`);
         next();
-    //if (req.session.name) {
-    //    console.log(`User has made login successful ...`);
-    //    next();
-    //} else {
-    //    console.log(`User hasn't made login successful ...`);
-    //    res.redirect('/users/login');
-    //}
-}
-
-router.get('/', requireLogin, function (req, res, next) {
-    //if (req.session && req.session.name) {
-    //    console.log(`User has made login successful ...`);
-        res.redirect('/index/rooms')
-    //} else {
-    //    console.log(`User hasn't made login successful ...`);
-    //    res.redirect('/users/login');
-    //}
+    } else {
+        if (req.method === 'GET') {
+            console.log(`@/index > Index Router [ router.use GET ] : Authentication invalide, req[path]: '${req.path}', redir >>> @/users/login`);
+            res.redirect('/users/login');
+        } else {
+            console.log(`@/index > Index Router [ router.use ALL ] : Authentication invalide, req[path]: '${req.path}', sending(report)`);
+            return res.json({ result: true, redirect:"/users/login", alert: "Access Denied!!! either due to Illegal access to server or communication error, please Login!!!"});
+        }
+    }
 });
 
-router.get('/index/rooms', requireLogin, async (req, res, next) => {
-    console.log(`req.session.name: ${req.session.name}`);
-    try {
-        console.log(`@/index/rooms [Get] : req : ${JSON.stringify(req.session)}`);
-    } catch (err) {
-        console.log(`@/index/rooms [Get] : Error : ${err}`);
+router.get('/', function (req, res, next) {
+    console.log(`@/index [ Get ] : >>>>> redir > @/index/rooms`);
+    res.redirect('/index/rooms')
+});
 
-    }
+router.get('/rooms', async (req, res, next) => {
     var roomListData;
     var roomListLabel;
     try {
@@ -65,7 +58,7 @@ router.get('/index/rooms', requireLogin, async (req, res, next) => {
     }
 });
 
-router.post("/index/rooms", async (req, res) => {
+router.post('/rooms', async (req, res) => {
     try {
         var temp = { sender : "subanesh-swe", message : "this is a reply from@/index/rooms [post] "};
         req.io.sockets.emit("chat", temp);
@@ -158,7 +151,7 @@ router.post("/index/rooms", async (req, res) => {
 
 
 
-router.get('/index/rooms/:roomId', requireLogin, async (req, res, next) => {
+router.get('/rooms/:roomId', async (req, res, next) => {
     try {
         const reqRoomId = req.params.roomId;
         if (reqRoomId == null) {
@@ -185,15 +178,15 @@ router.get('/index/rooms/:roomId', requireLogin, async (req, res, next) => {
     }
 });
 
-router.get('/index/rooms/chat_v2', requireLogin, function (req, res, next) {
+router.get('/rooms/chat_v2', function (req, res, next) {
     res.render('chat_v2', { title: "SWE's world", name: req.session.name });
 });
 
-router.get('/index/rooms/chat_v3', requireLogin, function (req, res, next) {
+router.get('/rooms/chat_v3', function (req, res, next) {
     res.render('chat_v3', { title: "SWE's world", name: req.session.name });
 });
 
-router.get('/index/rooms/chat_v4', requireLogin, function (req, res, next) {
+router.get('/rooms/chat_v4', function (req, res, next) {
     res.render('chat_v4', { title: "SWE's world", name: req.session.name });
 });
 

@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--<script src="/socket.io/socket.io.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js" integrity="sha512-jMNwWSmjje4fjYut9MBGKXw5FZA6D67NHAuC9szpjbbjg51KefquNfvn4DalCbGfkcv/jHsHnPo1o47+8u4biA==" crossorigin="anonymous"></script>-->
+    <!-- Generate integrity using https://www.srihash.org/ -->
     <link rel="stylesheet" href="/login.css">
     <link rel="stylesheet" href="/rooms.css">
     <style>
@@ -19,13 +21,13 @@
             --z-index-form-2: 4; /* form input hover z-index */
             --radar-color-1: rgba(0 242 255 / 0.20); /* radar inner lines */
             --radar-color-2: rgb(0 242 255 / 0.50); /* radar inner radiend color */
-            /*            --form-height: 500px;
-            --form-width: 380px;*/
-            /*            --form-input-margin-top: 25px;*/
+            /* --form-height: 500px; */
+            /* --form-width: 380px; */
+            /* --form-input-margin-top: 25px; */
         }
 
         .form-content h2 {
-            letter-spacing:initial;
+            letter-spacing: initial;
         }
 
         .form-container {
@@ -47,7 +49,6 @@
             color: var(--form-color);
             cursor: pointer;
         }
-
     </style>
     <title><%= unescape( title ) %></title>
 </head>
@@ -163,6 +164,5 @@
         </div>
     </div>
     <script src="/formHandler.js"></script>
-    <script src="/chat.js"></script>
 </body>
 </html>

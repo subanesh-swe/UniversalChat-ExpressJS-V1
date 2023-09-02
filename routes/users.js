@@ -10,19 +10,33 @@ const { create } = require("domain");
 
 const router = express.Router();
 
-router.get('/login', function (req, res, next) {
-    try {
-        console.log(`@/users/login [Get] : req : ${JSON.stringify(req.session)}`);
-
-        if (!req.session.name) {
-            res.render("login", { title: "Sign Up" });
+router.use( function (req, res, next) {
+    if (req.session && req.session.name) {
+        if (req.path === '/logout') {
+            next();
+        } else if (req.method === 'GET') {
+            console.log(`@/users > Users Router [ router.use GET ] : Authentication verified, req[path]: '${req.path}', redir >>> @/index/rooms`);
+            res.redirect('/index/rooms');
         } else {
-            res.redirect("/");
+            console.log(`@/users > Users Router [ router.use ALL ] : Authentication invalide, req[path]: '${req.path}', sending(report)`);
+            return res.json({ result: true, redirect: "/index/rooms", alert: "You have already Logged in!!!" });
         }
-    } catch (err) {
-        console.log(`@/users/login [Get] : Error : ${err}`);
-
+    } else {
+        console.log(`@/users > Users Router [ router.use ] : Authentication invalide...`);
+        next();
     }
+});
+
+
+router.get('/', function (req, res, next) {
+    console.log(`@/users [ Get ] : >>>>> redir > @/users/login`);
+    res.redirect('/users/login');
+});
+
+router.get('/login', function (req, res, next) {
+
+    res.render("login", { title: "Sign Up" });
+
 });
 
 router.post("/login", async (req, res) => {
@@ -58,7 +72,7 @@ router.post("/login", async (req, res) => {
                     console.log(`After cookie set: '${JSON.stringify(req.session.cookie)}'`);
                     console.log(`Plain cookie : '${JSON.stringify(plainCookie)}'`);
                     console.log(req.session);
-                    res.json({ result: true, redirect: `/`, alert: "login successful!" });
+                    res.json({ result: true, redirect: `/index/rooms`, alert: "login successful!" });
                     //return res.redirect("/");
                 } else {
                     res.json({ result: false, alert: "Invalid Password!!!" });
@@ -77,11 +91,9 @@ router.post("/login", async (req, res) => {
 });
 
 router.get('/register', function (req, res, next) {
-    if (!req.session.name) {
-        res.render("register", { title: "Register" });
-    } else {
-        res.redirect("/");
-    }
+
+    res.render("register", { title: "Register" });
+
 });
 
 router.post("/register", async (req, res) => {
@@ -132,7 +144,7 @@ router.get('/logout', function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            res.redirect('/');
+            res.redirect('/users/login');
         }
     });
     //res.clearCookie('session')

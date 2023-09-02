@@ -1,21 +1,21 @@
 
 @media (max-width: 768px) {
     #nav {
-/*        background-color: rgb(100, 255, 139);*/
+        /* background-color: rgb(100, 255, 139); */
     }
 
         #nav > #chat-heading {
-/*            font-size: 1rem;
-            font-weight: 800;*/
+            /* font-size: 1rem;
+            font-weight: 800; */
         }
 
     #chat-box {
-        /*        position:absolute;*/ /* in mobile leaves a bottom space*/
+        /* position:absolute;*/ /* in mobile leaves a bottom space*/
         position: fixed;
-/*        top: 50px;
-        left: 0;*/
+        /* top: 50px;
+        left: 0; */
         height: calc(100% - 50px);
-        /*            height: 100%;*/
+        /* height: 100%; */
     }
 
     .message {
@@ -66,7 +66,7 @@
         #input-container > #send-message {
             height: 3rem;
             width: 4rem;
-/*            max-width:6rem;*/
+            /* max-width:6rem; */
             font-size: 0.85rem;
             font-weight: 700;
         }

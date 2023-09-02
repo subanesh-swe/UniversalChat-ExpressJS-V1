@@ -16,8 +16,8 @@ function formSubmitHandler(event, formId) {
         .then(data => {
             console.log("response data = " + JSON.stringify(data));
             if (data.result === true) {
-                //window.location.href = data.redirect;
-                alert(`Result : true -> ${JSON.stringify(data)}`);
+                //alert(`Result : true -> ${JSON.stringify(data)}`);
+                window.location.href = data.redirect;
             } else {
                 alert(data.alert);
             }

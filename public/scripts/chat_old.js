@@ -1,5 +1,6 @@
-//const socket = io.connect('http://localhost:4000', { query: { userId: UserId } });
-const socket = io.connect(window.location.protocol + "//" + window.location.hostname + ((window.location.port) ? ":4000" : ""), { query: { userId: UserId } });
+const socket = io.connect("localhost:4000");
+const recipientIds = RoomData.participants.map(participant => participant.userId);
+recipientIds.splice(recipientIds.indexOf(UserId), 1);
 
 const sender = document.querySelector("#Name");
 const text_input = document.querySelector('#input-message');
@@ -8,32 +9,35 @@ const send_message = document.querySelector("#send-message");
 const chat_log = document.querySelector("#chat-log");
 const input_container = document.querySelector("#input-container");
 
-
-socket.on('connect', () => {
-    console.log(`UserId: ${UserId} --> Connected with id ${socket.id}`);
+chat_log.addEventListener('click', function (event) {
+    if (!event.target.closest('.message')) {
+        text_input.focus();
+    } else {
+        console.log('Clicked on msg');
+    }
 });
 
-
-socket.on('disconnect', () => {
-    console.log(`UserId: ${UserId} --> Disconnected with id ${socket.id}`);
+input_container.addEventListener('click', function (event) {
+    text_input.focus();
 });
 
+text_input.addEventListener('input', () => {
+    if (text_input.value == "") {
+        text_input.style.height = `${1.2}rem`;
+    } else {
+        //text_input.style.height = 'auto';
+        text_input.style.height = `${text_input.scrollHeight}px`;
+    }
+});
 
 send_message.addEventListener("click", () => {
 
     const message = text_input.value.replace(/^[ \t]*[\r\n]+/gm, '');
     if (message == "") return;
-    const sendData = {
-        recipientIds: RecipientIds,
-        roomId: RoomId,
-        data: {
-            message: message,
-            sender: sender.innerHTML,
-        }
-    };
-
-    socket.emit("sendMessage", sendData );
-    console.log(`Sending message --> roomId:'${sendData.roomId}', recipientId:'${sendData.recipientId}', data:'${JSON.stringify(sendData)}' `);
+    socket.emit("chat", {
+        message: message,
+        sender: sender.innerHTML,
+    });
 
     // convert html contents to text (if any)
     const rawMessageDiv = document.createElement("div");
@@ -60,14 +64,8 @@ send_message.addEventListener("click", () => {
     text_input.style.height = `${1.2}rem`;
 });
 
-
-
-socket.on("receiveMessage", (receivedData) => {
-
-    const { recipientIds, roomId, data } = receivedData;
-    console.log(`Received message --> roomId:'${roomId}', recipientIds:'${recipientIds}', data:'${data}' `);
-    if (RoomId !== roomId) return;
-
+socket.on("chat", (data) => {
+    console.log("Received msg");
     const message = data.message.replace(/^[ \t]*[\r\n]+/gm, '');
     if (message == "") return;
     // convert html contents to text (if any)
@@ -93,20 +91,6 @@ socket.on("receiveMessage", (receivedData) => {
         chat_log.innerHTML += msg;
     console.log("Received msg:" + msg);
 });
-
-input_container.addEventListener('click', function (event) {
-    text_input.focus();
-});
-
-text_input.addEventListener('input', () => {
-    if (text_input.value == "") {
-        text_input.style.height = `${1.2}rem`;
-    } else {
-        //text_input.style.height = 'auto';
-        text_input.style.height = `${text_input.scrollHeight}px`;
-    }
-});
-
 
 function logout() {
     // Clear local storage
