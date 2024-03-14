@@ -1,8 +1,11 @@
 ## Git ignore by subanesh
+
+## unwanted files
 /login-form-page
 /UniversalChat-ExpressJS-V1.esproj
 /UniversalChat-ExpressJS-V1.esproj.user
 .vscode
+
 # node_modules # already present
 
 # not important
