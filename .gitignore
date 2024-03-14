@@ -1,5 +1,7 @@
 ## Git ignore by subanesh
-
+/login-form-page
+/UniversalChat-ExpressJS-V1.esproj
+/UniversalChat-ExpressJS-V1.esproj.user
 .vscode
 # node_modules # already present
 
@@ -383,6 +385,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/UniversalChat.esproj
-/UniversalChat.esproj
-/login-form-page
+
