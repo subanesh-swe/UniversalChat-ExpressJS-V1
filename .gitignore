@@ -1,9 +1,6 @@
 ## Git ignore by subanesh
 
 .vscode
-/UniversalChat-ExpressJS-V1.esproj
-/UniversalChat-ExpressJS-V1.esproj.user
-
 # node_modules # already present
 
 # not important
@@ -21,11 +18,6 @@ obj
 # \.name: This will ignore any file
 
 ## Git ignore by subanesh --ends
-
-
-
-
-
 
 
 ## Ignore Visual Studio temporary files, build results, and
@@ -391,5 +383,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/UniversalChat.esproj
+/UniversalChat.esproj
 /login-form-page
-
