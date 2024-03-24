@@ -6,6 +6,8 @@
 /UniversalChat-ExpressJS-V1.esproj.user
 .vscode
 
+*.njsproj
+
 # node_modules # already present
 
 # not important
